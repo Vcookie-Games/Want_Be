@@ -170,6 +170,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   jumpDuration: 0.5
   jumpPower: 1
+  onDoneJump:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1 &496420689
 GameObject:
   m_ObjectHideFlags: 0
@@ -349,6 +352,7 @@ GameObject:
   - component: {fileID: 1985427905}
   - component: {fileID: 1985427904}
   - component: {fileID: 1985427903}
+  - component: {fileID: 1985427906}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -430,6 +434,19 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1985427906
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1985427902}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 53e914005bf96f440a8a5f24e052a119, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  camOffset: -2
 --- !u!1 &2145020863
 GameObject:
   m_ObjectHideFlags: 0
@@ -477,8 +494,16 @@ MonoBehaviour:
   player: {fileID: 29633826}
   blockPrefab: {fileID: 5184133529633098793, guid: 638201979debc234fbd1ce9fd462620d, type: 3}
   blockSpeed: 3
-  camSpeed: 2
   currentBlockDirection: 0
+  onSpawnBlock:
+    m_PersistentCalls:
+      m_Calls: []
+  onRaiseBlock:
+    m_PersistentCalls:
+      m_Calls: []
+  onPlayerJump:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

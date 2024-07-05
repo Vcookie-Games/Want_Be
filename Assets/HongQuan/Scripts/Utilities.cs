@@ -93,10 +93,18 @@ namespace QuanUtilities
         {
             return 2 * cam.orthographicSize * cam.aspect;
         }
+        public static float HalfWidth(this Camera cam)
+        {
+            return cam.orthographicSize * cam.aspect;
+        }
 
         public static float Height(this Camera cam)
         {
             return 2 * cam.orthographicSize;
+        }
+        public static float HalfHeight(this Camera cam)
+        {
+            return cam.orthographicSize;
         }
     }
 
