@@ -3,7 +3,10 @@ guid: cc6a43f175e0c1c4291dad8784f0fd5f
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - achievementDatabase: {fileID: 11400000, guid: 6e7245972284d5141904bde8a16b3a19, type: 2}
+  - achievementPopupPrefab: {fileID: 515616075934108896, guid: 759f50c43fb3a1f4fb6e9a9173d2ad79, type: 3}
+  - popupParent: {instanceID: 0}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

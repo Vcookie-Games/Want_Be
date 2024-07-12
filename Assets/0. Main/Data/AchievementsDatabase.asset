@@ -15,5 +15,5 @@ MonoBehaviour:
   achievements:
   - id: 1
     name: frist jump
-    requirement: frist jump
-    IsCompleted: 0
+    requirement: jump frist time
+    IsCompleted: 1

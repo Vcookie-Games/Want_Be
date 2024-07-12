@@ -7,16 +7,14 @@ using TMPro;
 
 public class AchievementSystem : MonoBehaviour
 {
+    public static AchievementSystem instance { get; private set; }
+
+
     [SerializeField] private AchievementDatabase achievementDatabase;
     [SerializeField] private GameObject achievementPopupPrefab;
     [SerializeField] private Transform popupParent;
     [SerializeField] private float popupDuration = 2f;
-    public static AchievementSystem instance
-    {
 
-        get; private set;
-
-    }
 
     private void Awake()
     {
@@ -29,6 +27,13 @@ public class AchievementSystem : MonoBehaviour
         else
         {
             Destroy(this);
+        }
+    }
+    private void Update()
+    {
+        if (popupParent == null)
+        {
+            popupParent = FindAnyObjectByType<Canvas>().gameObject.transform;
         }
     }
 
