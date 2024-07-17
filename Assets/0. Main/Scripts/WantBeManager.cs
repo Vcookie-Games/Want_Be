@@ -12,6 +12,10 @@ public class WantBeManager : MonoBehaviour
     [SerializeField] protected Player player;
     [SerializeField] protected Block blockPrefab;
     [SerializeField] protected float blockSpeed = 7;
+    [SerializeField] protected float camSpeed = 5;
+    public DeadZone deadzone;
+    private bool isFirstJump = true;
+    private bool deadzoneMoving = false;
 
     public BlockDirection currentBlockDirection;
 
@@ -33,6 +37,7 @@ public class WantBeManager : MonoBehaviour
     {
         instance = this;
         mainCam = Camera.main;
+        deadzone.Initialize(player);
     }
 
     protected virtual void Update()
@@ -53,6 +58,16 @@ public class WantBeManager : MonoBehaviour
         {
             player.JumpTo(currentBlock.Top);
             onPlayerJump?.Invoke();
+            if (isFirstJump && deadzone != null)
+            {
+                deadzoneMoving = true;
+                isFirstJump = false;
+            }
+        }
+
+        if (deadzoneMoving)
+        {
+            deadzone.MoveUp();
         }
     }
 
@@ -116,5 +131,11 @@ public class WantBeManager : MonoBehaviour
         Left,
         Right,
         None,
+    }
+
+    public void GameOver()
+    {
+        // ChangeMe
+        Time.timeScale = 0;
     }
 }
