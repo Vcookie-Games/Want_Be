@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d17262a62607c954a8b53882ba194161, type: 3}
+  m_Name: TestMusic
+  m_EditorClassIdentifier: 
+  soundName: TestMusic
+  clip: {fileID: 8300000, guid: 24ea626be1be69b46acfbfa762e8c90c, type: 3}
+  mixerSource: {fileID: -2802681682021557089, guid: cb598b5e7ce4a9642b725fb21e3c6f05, type: 2}
+  isLoop: 1
+  type: 0

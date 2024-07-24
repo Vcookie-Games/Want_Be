@@ -1,31 +1,26 @@
-using System;
-using UnityEngine;
-
-[Serializable]
-public class Sound
-{
-    public string name;
-    public AudioClip audio;
-}
+﻿using UnityEngine;
+using UnityEngine.Audio;
 
 public enum SoundType
 {
     MUSIC, SFX
 }
 
-public enum SoundAction
-{
-    PLAY, STOP, PAUSE
-}
-
 public class WantBeSoundManager : MonoBehaviour
 {
     public static WantBeSoundManager Instance;
 
-    public Sound[] music;
-    public Sound[] sfx;
-    public AudioSource musicSource;
+    //Để đây đỡ tới khi nào làm load resources thì sẽ load động bằng addressable
+    public SoundSO sfx;
+    public SoundSO music;
+    public AudioMixerGroup musicMixerSource;
+    public AudioMixerGroup sfxMixerSource;
     public AudioSource sfxSource;
+    public AudioSource musicSource;
+    public AudioMixer audioMixer;
+    /// 
+    private const string SFX_MIXER_NAME = "Sfx";
+    private const string MUSIC_MIXER_NAME = "Music";
 
     private void Awake()
     {
@@ -42,63 +37,53 @@ public class WantBeSoundManager : MonoBehaviour
 
     private void Start()
     {
-        DoAction(Constant.TEST_MUSIC, SoundType.MUSIC, SoundAction.PLAY);
+        PlayMusic(music);
     }
 
-    public void DoAction(string musicName, SoundType type, SoundAction action)
+    public void PlayMusic(SoundSO s)
     {
-        Sound s = (type == SoundType.MUSIC) ? Array.Find(music, music => music.name == musicName) : Array.Find(sfx, music => music.name == musicName);
         if (s == null)
         {
             Debug.LogWarning("sound not found");
+            return;
         }
-        else
+        if (s.type != SoundType.MUSIC)
         {
-            switch (action)
-            {
-                case SoundAction.PLAY:
-                    {
-                        if (type == SoundType.MUSIC)
-                        {
-                            musicSource.clip = s.audio;
-                            musicSource.Play();
-                        }
-                        else
-                        {
-                            sfxSource.clip = s.audio;
-                            sfxSource.Play();
-                        }
-                        break;
-                    }
-                case SoundAction.STOP:
-                    {
-                        if (type == SoundType.MUSIC)
-                        {
-                            musicSource.Stop();
-                        }
-                        else
-                        {
-                            sfxSource.Stop();
-                        }
-                        break;
-                    }
-                case SoundAction.PAUSE:
-                    {
-                        if (type == SoundType.MUSIC)
-                        {
-                            musicSource.Pause();
-                        }
-                        else
-                        {
-                            sfxSource.Pause();
-                        }
-                        break;
-                    }
-                default:
-                    {
-                        break;
-                    }
-            }
+            Debug.LogWarning("incorrect sound type");
+            return;
         }
+        musicSource.outputAudioMixerGroup = s.mixerSource;
+        musicSource.clip = s.clip;
+        musicSource.loop = s.isLoop;
+        musicSource.Play();
     }
+
+    public void PlaySFX(SoundSO s)
+    {
+        if (s == null)
+        {
+            Debug.LogWarning("sound not found");
+            return;
+        }
+        if (s.type != SoundType.SFX)
+        {
+            Debug.LogWarning("incorrect sound type");
+            return;
+        }
+        sfxSource.outputAudioMixerGroup = s.mixerSource;
+        sfxSource.clip = s.clip;
+        sfxSource.loop = s.isLoop;
+        sfxSource.Play();
+    }
+
+    public void SetSFXVolume(float val)
+    {
+        audioMixer.SetFloat(SFX_MIXER_NAME, val);
+    }
+
+    public void SetMusicVolume(float val)
+    {
+        audioMixer.SetFloat(MUSIC_MIXER_NAME, val);
+    }
+
 }
