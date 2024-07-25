@@ -19,6 +19,5 @@ public class Player : MonoBehaviour
         {
             onDoneJump?.Invoke();
         });
-        AchievementSystem.instance.UnlockAchievement(1);
     }
 }

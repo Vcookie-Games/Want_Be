@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using TMPro;
+using System.IO;
 
 public class AchievementSystem : MonoBehaviour
 {
@@ -29,20 +30,13 @@ public class AchievementSystem : MonoBehaviour
             Destroy(this);
         }
     }
-    private void Update()
-    {
-        if (popupParent == null)
-        {
-            popupParent = FindAnyObjectByType<Canvas>().gameObject.transform;
-        }
-    }
 
     public void UnlockAchievement(int id)
     {
         Achievement achievement = achievementDatabase.achievements.Find(a => a.id == Convert.ToString(id));
         if (achievement.IsCompleted) return;
-
         achievement.IsCompleted = true;
+        SaveData(achievement);
         Debug.Log($" completed achievement {achievement.name}");
         StartCoroutine(ShowAchievementPopup(achievement));
     }
@@ -56,6 +50,23 @@ public class AchievementSystem : MonoBehaviour
         yield return new WaitForSeconds(popupDuration);
 
         Destroy(popup);
+    }
+    private void SaveData(Achievement achievement)
+    {
+        string json = JsonUtility.ToJson(achievement);
+        string path = Application.persistentDataPath + $"/{achievement.name}Achievement.json";
+        File.WriteAllText(path, json);
+
+    }
+
+    private void ReadData(Achievement achievement)
+    {
+        string path = Application.persistentDataPath + $"/{achievement.name}Achievement.json;";
+        if (File.Exists(path))
+        {
+            string jsonFromFile = File.ReadAllText(path);
+            achievement = JsonUtility.FromJson<Achievement>(jsonFromFile);
+        }
     }
 }
 

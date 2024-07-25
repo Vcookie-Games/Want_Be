@@ -438,6 +438,10 @@ PrefabInstance:
       propertyPath: popupParent
       value: 
       objectReference: {fileID: 548259505}
+    - target: {fileID: 979484083534650428, guid: dd22013dc70f1d44ab1d40d35bff0885, type: 3}
+      propertyPath: achievementDatabase
+      value: 
+      objectReference: {fileID: 11400000, guid: 427d37253d8a16a4895708299098b330, type: 2}
     - target: {fileID: 3983112658465513898, guid: dd22013dc70f1d44ab1d40d35bff0885, type: 3}
       propertyPath: m_Name
       value: Achievement System
