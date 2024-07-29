@@ -19,5 +19,6 @@ public class Player : MonoBehaviour
         {
             onDoneJump?.Invoke();
         });
+
     }
 }

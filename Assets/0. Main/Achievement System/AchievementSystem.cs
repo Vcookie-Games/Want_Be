@@ -17,6 +17,7 @@ public class AchievementSystem : MonoBehaviour
     [SerializeField] private float popupDuration = 2f;
 
 
+
     private void Awake()
     {
 
@@ -33,11 +34,18 @@ public class AchievementSystem : MonoBehaviour
 
     public void UnlockAchievement(int id)
     {
-        Achievement achievement = achievementDatabase.achievements.Find(a => a.id == Convert.ToString(id));
+        string idString = id.ToString();
+        Achievement achievement = achievementDatabase.GetAchievementById(idString);
+        if (achievement == null)
+        {
+            Debug.LogError($"Achievement with id {id} not found.");
+            return;
+        }
+
         if (achievement.IsCompleted) return;
         achievement.IsCompleted = true;
         SaveData(achievement);
-        Debug.Log($" completed achievement {achievement.name}");
+        Debug.Log($"Completed achievement {achievement.name}");
         StartCoroutine(ShowAchievementPopup(achievement));
     }
 

@@ -12,4 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9684cee1f342a3844bd50e5f4ab03af3, type: 3}
   m_Name: AchievementsDatabase
   m_EditorClassIdentifier: 
-  achievements: []
+  achievements:
+  - id: 1
+    name: first jump
+    requirement: 
+    IsCompleted: 1
