@@ -20,6 +20,17 @@ namespace QuanUtilities
             onDone?.Invoke();
         }
 
+        public static Coroutine DelayFunctionOneFrame(this MonoBehaviour mono, Action onDone)
+        {
+            return mono.StartCoroutine(StartDelayOneFrameFuction(onDone));
+        }
+
+        private static IEnumerator StartDelayOneFrameFuction(System.Action onDone)
+        {
+            yield return null;
+            onDone?.Invoke();
+        }
+
         public static void SaveData(string data, string fileName)
         {
             string dataPath = $"{Application.persistentDataPath}/{fileName}.txt";
@@ -41,7 +52,7 @@ namespace QuanUtilities
         /// </summary>
         /// <returns></returns>
 
-        public static bool IsPointerOverUIObject(this MonoBehaviour mono)
+        public static bool IsPointerOverUIObject()
         {
             PointerEventData eventDataCurrentPosition = new PointerEventData(EventSystem.current);
             eventDataCurrentPosition.position = new Vector2(Input.mousePosition.x, Input.mousePosition.y);

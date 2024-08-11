@@ -1,4 +1,6 @@
+using DG.Tweening;
 using QuanUtilities;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -7,12 +9,14 @@ public class Block : MonoBehaviour
 {
     [SerializeField] protected SpriteRenderer bottomSpriteRenderer;
     [SerializeField] protected Transform topTransform;
+    [SerializeField] private BlockDirection blockDirection;
 
-    public System.Action<Block> onDespawn;
+    public Action<Block> onDespawn;
 
     public float Height => bottomSpriteRenderer.sprite.bounds.size.y
             * bottomSpriteRenderer.transform.localScale.y;
     public Transform Top => topTransform;
+    public BlockDirection Direction => blockDirection;
 
     protected Material bottomMaterial;
     protected Camera mainCam;
@@ -32,11 +36,7 @@ public class Block : MonoBehaviour
         bottomMaterial.SetVector("_Tiling", bottomSpriteRenderer.transform.localScale);
 
         topTransform.position = transform.position + Vector3.up * Height;
-
-        if(Input.GetMouseButtonUp(0))
-        {
-            CheckDespawn();
-        }
+        CheckDespawn();
     }
 
     public virtual void CheckDespawn()
@@ -53,8 +53,64 @@ public class Block : MonoBehaviour
         bottomSpriteRenderer.transform.localScale += new Vector3(0, speed * Time.deltaTime, 0);
     }
 
+    public void SetHeight(float height)
+    {
+        var localScale = bottomSpriteRenderer.transform.localScale;
+        localScale.y = height / bottomSpriteRenderer.sprite.bounds.size.y;
+        bottomSpriteRenderer.transform.localScale = localScale;
+    }
+
+    public void SetHeight(float height, float tweenDuration)
+    {
+        height /= bottomSpriteRenderer.sprite.bounds.size.y;
+        bottomSpriteRenderer.transform.DOScaleY(height, tweenDuration);
+    }
+
     public void ResetHeight()
     {
         bottomSpriteRenderer.transform.localScale = new Vector3(bottomSpriteRenderer.transform.localScale.x, 0, 1);
     }
+
+    private void OnDestroy()
+    {
+        onDespawn = null;
+    }
+
+    public void SetDirection(BlockDirection blockDirection)
+    {
+        this.blockDirection = blockDirection;
+    }
+
+    public BlockDirection GetInvertDirection()
+    {
+        switch (blockDirection)
+        {
+            case BlockDirection.Left:
+                return BlockDirection.Right;
+            case BlockDirection.Right:
+                return BlockDirection.Left;
+        }
+        return BlockDirection.None;
+    }
+
+    public static BlockDirection GetInvertDirection(BlockDirection blockDirection)
+    {
+        switch (blockDirection)
+        {
+            case BlockDirection.Left:
+                return BlockDirection.Right;
+            case BlockDirection.Right:
+                return BlockDirection.Left;
+        }
+        return BlockDirection.None;
+    }
+}
+
+
+[Serializable]
+public enum BlockDirection
+{
+    Left,
+    Right,
+    None,
 }

@@ -1,26 +1,28 @@
+using QuanUtilities;
 using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
+using UnityEngine.EventSystems;
 using UnityEngine.UIElements;
 
 public class WantBeManager : MonoBehaviour
 {
     public static WantBeManager instance;
 
-    [SerializeField] protected Player player;
-    [SerializeField] protected Block blockPrefab;
-    [SerializeField] protected float blockSpeed = 7;
+    [SerializeField] private Player player;
+    [SerializeField] private Block blockPrefab;
+    [SerializeField] private float blockSpeed = 7;
+    [SerializeField] private UIPointerEvents inputEvents;
+    [SerializeField] private float limitHeightWithCam = 8;
 
-    public BlockDirection currentBlockDirection;
+    public BlockDirection startBlockDirection;
 
-    protected List<Block> blocks = new List<Block>();
-    protected Camera mainCam;
+    private Camera mainCam;
 
-    protected Block currentBlockLeft;
-    protected Block currentBlockRight;
-    protected Block currentBlock;
+    [SerializeField] private Block lastBlock = null;
+    [SerializeField] private Block currentBlock = null;
 
     public UnityEvent onSpawnBlock;
     public UnityEvent onRaiseBlock;
@@ -35,63 +37,111 @@ public class WantBeManager : MonoBehaviour
         mainCam = Camera.main;
     }
 
-    protected virtual void Update()
+    private void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Utilities.IsPointerOverUIObject())
         {
-            SpawnBlock();
-            onSpawnBlock?.Invoke();
+            if (!isInputRelease)
+            {
+                InputRelease();
+            }
+            return;
         }
+
+        if (player.IsJumping) return;
 
         if (Input.GetMouseButton(0))
         {
-            IncreaseBlockHeight();
-            onRaiseBlock?.Invoke();
+            InputHolding();
         }
-
-        if (Input.GetMouseButtonUp(0))
+        else if (Input.GetMouseButtonUp(0))
         {
-            player.JumpTo(currentBlock.Top);
-            onPlayerJump?.Invoke();
+            InputRelease();
         }
     }
 
-    protected virtual void SpawnBlock()
+    bool isInputDown = false;
+    bool isInputRelease = true;
+
+    private void InputDown()
+    {
+        isInputDown = true;
+        isInputRelease = false;
+        CreateBlock();
+        onSpawnBlock?.Invoke();
+    }
+
+    private void InputHolding()
+    {
+
+        if (!isInputDown)
+        {
+            InputDown();
+            return;
+        }
+
+        IncreaseBlockHeight();
+        onRaiseBlock?.Invoke();
+
+        this.DelayFunctionOneFrame(() =>
+        {
+            if (currentBlock.Top.position.y >= mainCam.BottomBorder() + limitHeightWithCam)
+            {
+                InputRelease();
+            }
+        });
+
+    }
+
+    private void InputRelease()
+    {
+        if (isInputRelease) return;
+
+        isInputDown = false;
+        isInputRelease = true;
+
+        player.JumpTo(currentBlock.Top);
+        SetLastBlockSameHeightWithCurrentBlock();
+        onPlayerJump?.Invoke();
+    }
+
+    protected virtual void CreateBlock()
+    {
+        BlockDirection lastDirection = BlockDirection.None;
+        if (lastBlock != null)
+        {
+            lastDirection = lastBlock.Direction;
+        }
+        else
+        {
+            lastDirection = startBlockDirection;
+        }
+        lastBlock = currentBlock;
+        currentBlock = SpawnBlock(lastDirection);
+        currentBlock.onDespawn += DespawnBlocks;
+        currentBlock.ResetHeight();
+    }
+
+    private Block SpawnBlock(BlockDirection blockDirection, bool spawnOnTopOfLastBlock = true)
     {
         Vector3 spawnPos = new Vector3(mainCam.transform.position.x, mainCam.transform.position.y - mainCam.orthographicSize);
-
-        switch (currentBlockDirection)
+        switch (blockDirection)
         {
             case BlockDirection.Left:
                 spawnPos += Vector3.left * mainCam.orthographicSize * mainCam.aspect / 2f;
-                if (currentBlockRight != null)
-                {
-                    spawnPos = new Vector3(spawnPos.x, currentBlockRight.Top.position.y);
-                }
-                currentBlockDirection = BlockDirection.Right;
                 break;
             case BlockDirection.Right:
                 spawnPos += Vector3.right * mainCam.orthographicSize * mainCam.aspect / 2f;
-                if (currentBlockLeft != null)
-                {
-                    spawnPos = new Vector3(spawnPos.x, currentBlockLeft.Top.position.y);
-                }
-                currentBlockDirection = BlockDirection.Left;
                 break;
         }
-        currentBlock = SimplePool.Spawn(blockPrefab, spawnPos, Quaternion.identity);
-        currentBlock.onDespawn += DespawnBlocks;
-        currentBlock.ResetHeight();
-        blocks.Add(currentBlock);
-        switch (currentBlockDirection)
+        if (spawnOnTopOfLastBlock && lastBlock != null)
         {
-            case BlockDirection.Left:
-                currentBlockLeft = currentBlock;
-                break;
-            case BlockDirection.Right:
-                currentBlockRight = currentBlock;
-                break;
+            spawnPos.y = lastBlock.Top.position.y;
         }
+        var res = SimplePool.Spawn(blockPrefab, spawnPos, Quaternion.identity);
+        res.ResetHeight();
+        res.SetDirection(blockDirection);
+        return res;
     }
 
     protected void IncreaseBlockHeight()
@@ -99,22 +149,27 @@ public class WantBeManager : MonoBehaviour
         currentBlock.AddHeight(blockSpeed);
     }
 
+    public void SetLastBlockSameHeightWithCurrentBlock()
+    {
+        if (lastBlock == null)
+        {
+            lastBlock = SpawnBlock(currentBlock.GetInvertDirection(), false);
+            lastBlock.SetDirection(currentBlock.GetInvertDirection());
+        }
+        lastBlock.SetHeight(currentBlock.Top.transform.position.y - lastBlock.transform.position.y, player.JumpDuration);
+    }
+
     protected void DespawnBlocks(Block block)
     {
+        if (block == null || block == currentBlock || block == lastBlock) return;
         block.onDespawn -= DespawnBlocks;
-        blocks.Remove(block);
     }
 
     private void OnDestroy()
     {
         instance = null;
-    }
-
-    [Serializable]
-    public enum BlockDirection
-    {
-        Left,
-        Right,
-        None,
+        onSpawnBlock.RemoveAllListeners();
+        onRaiseBlock.RemoveAllListeners();
+        onPlayerJump.RemoveAllListeners();
     }
 }
