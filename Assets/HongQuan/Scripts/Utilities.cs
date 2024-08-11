@@ -48,7 +48,7 @@ namespace QuanUtilities
         }
 
         /// <summary>
-        /// Use this if EventSystem.current.IsPointerOverGameObject() not work, this often occur in mobile
+        /// Use this if EventSystem.current.IsPointerOverGameObject() not work or check pointer over UI Objects
         /// </summary>
         /// <returns></returns>
 
