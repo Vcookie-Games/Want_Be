@@ -35,6 +35,8 @@ public class WantBeManager : MonoBehaviour
     {
         instance = this;
         mainCam = Camera.main;
+
+        Application.targetFrameRate = 30;
     }
 
     private void Update()
@@ -77,20 +79,15 @@ public class WantBeManager : MonoBehaviour
         if (!isInputDown)
         {
             InputDown();
-            return;
         }
 
         IncreaseBlockHeight();
         onRaiseBlock?.Invoke();
 
-        this.DelayFunctionOneFrame(() =>
+        if (currentBlock.Top.position.y >= mainCam.BottomBorder() + limitHeightWithCam)
         {
-            if (currentBlock.Top.position.y >= mainCam.BottomBorder() + limitHeightWithCam)
-            {
-                InputRelease();
-            }
-        });
-
+            InputRelease();
+        }
     }
 
     private void InputRelease()
@@ -99,7 +96,7 @@ public class WantBeManager : MonoBehaviour
 
         isInputDown = false;
         isInputRelease = true;
-
+        currentBlock.UpdateTop();
         player.JumpTo(currentBlock.Top);
         SetLastBlockSameHeightWithCurrentBlock();
         onPlayerJump?.Invoke();
@@ -120,6 +117,7 @@ public class WantBeManager : MonoBehaviour
         currentBlock = SpawnBlock(lastDirection);
         currentBlock.onDespawn += DespawnBlocks;
         currentBlock.ResetHeight();
+        currentBlock.UpdateTop();
     }
 
     private Block SpawnBlock(BlockDirection blockDirection, bool spawnOnTopOfLastBlock = true)

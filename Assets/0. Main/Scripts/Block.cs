@@ -35,8 +35,13 @@ public class Block : MonoBehaviour
     {
         bottomMaterial.SetVector("_Tiling", bottomSpriteRenderer.transform.localScale);
 
-        topTransform.position = transform.position + Vector3.up * Height;
+        UpdateTop();
         CheckDespawn();
+    }
+
+    public void UpdateTop()
+    {
+        topTransform.position = transform.position + Vector3.up * Height;
     }
 
     public virtual void CheckDespawn()
