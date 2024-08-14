@@ -14,7 +14,6 @@ public class WantBeManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private float blockSpeed = 7;
-    [SerializeField] private UIPointerEvents inputEvents;
     [SerializeField] private float limitHeightWithCam = 8;
 
     public BlockDirection startBlockDirection;
@@ -24,7 +23,6 @@ public class WantBeManager : MonoBehaviour
     [SerializeField] private Block lastBlock = null;
     [SerializeField] private Block currentBlock = null;
 
-    public UnityEvent onSpawnBlock;
     public UnityEvent onRaiseBlock;
     public UnityEvent onPlayerJump;
 
@@ -69,8 +67,6 @@ public class WantBeManager : MonoBehaviour
     {
         isInputDown = true;
         isInputRelease = false;
-        CreateBlock();
-        onSpawnBlock?.Invoke();
     }
 
     private void InputHolding()
@@ -100,25 +96,16 @@ public class WantBeManager : MonoBehaviour
         player.JumpTo(currentBlock.Top);
         SetLastBlockSameHeightWithCurrentBlock();
         onPlayerJump?.Invoke();
+        SwapBlock();
     }
 
-    protected virtual void CreateBlock()
+    private void SwapBlock()
     {
-        BlockDirection lastDirection = BlockDirection.None;
-        if (lastBlock != null)
-        {
-            lastDirection = lastBlock.Direction;
-        }
-        else
-        {
-            lastDirection = startBlockDirection;
-        }
-        lastBlock = currentBlock;
-        currentBlock = SpawnBlock(lastDirection);
-        currentBlock.onDespawn += DespawnBlocks;
-        currentBlock.ResetHeight();
-        currentBlock.UpdateTop();
+        var t = currentBlock;
+        currentBlock = lastBlock;
+        lastBlock = t;
     }
+
 
     private Block SpawnBlock(BlockDirection blockDirection, bool spawnOnTopOfLastBlock = true)
     {
@@ -144,6 +131,10 @@ public class WantBeManager : MonoBehaviour
 
     protected void IncreaseBlockHeight()
     {
+        if(currentBlock == null)
+        {
+            currentBlock = SpawnBlock(startBlockDirection, false);
+        }
         currentBlock.AddHeight(blockSpeed);
     }
 
@@ -166,7 +157,6 @@ public class WantBeManager : MonoBehaviour
     private void OnDestroy()
     {
         instance = null;
-        onSpawnBlock.RemoveAllListeners();
         onRaiseBlock.RemoveAllListeners();
         onPlayerJump.RemoveAllListeners();
     }
