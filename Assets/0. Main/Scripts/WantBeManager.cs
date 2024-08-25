@@ -14,7 +14,7 @@ public class WantBeManager : MonoBehaviour
     [SerializeField] private Player player;
     [SerializeField] private Block blockPrefab;
     [SerializeField] private float blockSpeed = 7;
-    [SerializeField] private float limitHeightWithCam = 8;
+    [SerializeField] private float limitBlockHeightWithPlayer = 2;
 
     public BlockDirection startBlockDirection;
 
@@ -34,7 +34,13 @@ public class WantBeManager : MonoBehaviour
         instance = this;
         mainCam = Camera.main;
 
-        Application.targetFrameRate = 30;
+        Application.targetFrameRate = 60;
+    }
+
+    private void Start()
+    {
+        currentBlock = SpawnBlock(startBlockDirection, false);
+        lastBlock = SpawnBlock(Block.GetInvertDirection(startBlockDirection), false);
     }
 
     private void Update()
@@ -50,7 +56,7 @@ public class WantBeManager : MonoBehaviour
 
         if (player.IsJumping) return;
 
-        if (Input.GetMouseButton(0))
+        if (Input.GetMouseButton(0) && IsValidInput())
         {
             InputHolding();
         }
@@ -71,7 +77,6 @@ public class WantBeManager : MonoBehaviour
 
     private void InputHolding()
     {
-
         if (!isInputDown)
         {
             InputDown();
@@ -80,7 +85,7 @@ public class WantBeManager : MonoBehaviour
         IncreaseBlockHeight();
         onRaiseBlock?.Invoke();
 
-        if (currentBlock.Top.position.y >= mainCam.BottomBorder() + limitHeightWithCam)
+        if (currentBlock.Top.position.y >= player.Transform.position.y + limitBlockHeightWithPlayer)
         {
             InputRelease();
         }
@@ -93,10 +98,28 @@ public class WantBeManager : MonoBehaviour
         isInputDown = false;
         isInputRelease = true;
         currentBlock.UpdateTop();
-        player.JumpTo(currentBlock.Top);
+        player.JumpTo(currentBlock);
         SetLastBlockSameHeightWithCurrentBlock();
         onPlayerJump?.Invoke();
         SwapBlock();
+    }
+
+    private bool IsValidInput()
+    {
+        BlockDirection blockDirection;
+        if (currentBlock == null) blockDirection = Block.GetInvertDirection(startBlockDirection);
+        else blockDirection = currentBlock.Direction;
+
+        var inputDir = Input.mousePosition.x - Screen.width / 2f;
+
+        switch (blockDirection)
+        {
+            case BlockDirection.Left:
+                return inputDir < 0;
+            case BlockDirection.Right:
+                return inputDir > 0;
+        }
+        return false;
     }
 
     private void SwapBlock()
@@ -131,20 +154,11 @@ public class WantBeManager : MonoBehaviour
 
     protected void IncreaseBlockHeight()
     {
-        if(currentBlock == null)
-        {
-            currentBlock = SpawnBlock(startBlockDirection, false);
-        }
         currentBlock.AddHeight(blockSpeed);
     }
 
     public void SetLastBlockSameHeightWithCurrentBlock()
     {
-        if (lastBlock == null)
-        {
-            lastBlock = SpawnBlock(currentBlock.GetInvertDirection(), false);
-            lastBlock.SetDirection(currentBlock.GetInvertDirection());
-        }
         lastBlock.SetHeight(currentBlock.Top.transform.position.y - lastBlock.transform.position.y, player.JumpDuration);
     }
 

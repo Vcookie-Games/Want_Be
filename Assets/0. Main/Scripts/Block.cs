@@ -88,14 +88,7 @@ public class Block : MonoBehaviour
 
     public BlockDirection GetInvertDirection()
     {
-        switch (blockDirection)
-        {
-            case BlockDirection.Left:
-                return BlockDirection.Right;
-            case BlockDirection.Right:
-                return BlockDirection.Left;
-        }
-        return BlockDirection.None;
+        return GetInvertDirection(blockDirection);
     }
 
     public static BlockDirection GetInvertDirection(BlockDirection blockDirection)
