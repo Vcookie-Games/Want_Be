@@ -15,6 +15,7 @@ public class WantBeManager : MonoBehaviour
     [SerializeField] private Block blockPrefab;
     [SerializeField] private float blockSpeed = 7;
     [SerializeField] private float limitBlockHeightWithPlayer = 2;
+    [SerializeField] private float minHeightJump = 0.5f;
 
     public BlockDirection startBlockDirection;
 
@@ -23,11 +24,28 @@ public class WantBeManager : MonoBehaviour
     [SerializeField] private Block lastBlock = null;
     [SerializeField] private Block currentBlock = null;
 
+    //For jump inplace
+    public bool isJumpInPlace { get; private set; }
+    private float lastPosYOfBlock;
+    
+    //
     public UnityEvent onRaiseBlock;
     public UnityEvent onPlayerJump;
 
     public Player Player => player;
-    public Block CurrentBlock => currentBlock;
+
+    public Block CurrentBlock
+    {
+        get
+        {
+            if (isJumpInPlace)
+            {
+                return lastBlock;
+            }
+
+            return currentBlock;
+        }
+    }
 
     protected virtual void Awake()
     {
@@ -47,6 +65,7 @@ public class WantBeManager : MonoBehaviour
     {
         if (Utilities.IsPointerOverUIObject())
         {
+            Debug.Log("over UI");
             if (!isInputRelease)
             {
                 InputRelease();
@@ -54,15 +73,46 @@ public class WantBeManager : MonoBehaviour
             return;
         }
 
-        if (player.IsJumping) return;
+        //if (!isJumpInPlace && player.IsJumping) return;
 
-        if (Input.GetMouseButton(0) && IsValidInput())
+        if(Input.GetMouseButtonDown(0))
         {
-            InputHolding();
+            if (IsValidInput()) //Input in same field with the position of player
+            {
+               
+                InputDownAnotherPlace();
+            }
+            else
+            {
+                //Input is opposite field with position, Jump in place
+               InputDownInPlace();
+            }
+        }
+        else if (Input.GetMouseButton(0))
+        {
+
+            if (!isJumpInPlace)
+            {
+                InputHolding();
+
+            }
+            else
+            {
+                InputHoldingJumpInPlace();
+
+            }
         }
         else if (Input.GetMouseButtonUp(0))
         {
-            InputRelease();
+            
+            if (!isJumpInPlace)
+            {
+                InputRelease();
+            }
+            else
+            {
+                InputReleaseJumpInPlace();
+            }
         }
     }
 
@@ -75,31 +125,97 @@ public class WantBeManager : MonoBehaviour
         isInputRelease = false;
     }
 
+    private void InputDownAnotherPlace()
+    {
+        isJumpInPlace = false;
+        InputDown();
+    }
+
+    private void InputDownInPlace()
+    {
+        InputDown();
+        lastPosYOfBlock = lastBlock.Top.position.y;
+        player.JumpInPlace(lastBlock);
+        isJumpInPlace = true;
+    }
     private void InputHolding()
     {
         if (!isInputDown)
         {
-            InputDown();
+            return;
         }
-
+     
         IncreaseBlockHeight();
         onRaiseBlock?.Invoke();
 
-        if (currentBlock.Top.position.y >= player.Transform.position.y + limitBlockHeightWithPlayer)
+        if (currentBlock.TopPos.y >= lastBlock.Top.position.y + limitBlockHeightWithPlayer)
         {
+            //Debug.Log("release another placeee " + currentBlock.gameObject.name + " "+ currentBlock.Top.position.y + " " +currentBlock.TopPos + " "+ lastBlock.Top.position.y + " " + currentBlock.Top.localPosition.y);
             InputRelease();
         }
     }
 
-    private void InputRelease()
+    //Recycle code later
+    private void InputHoldingJumpInPlace()
+    {
+        if (!isInputDown)
+        {
+            return;
+        }
+
+        
+        lastBlock.AddHeight(blockSpeed);
+        if(!player.IsJumping)
+            player.UpdatePositionAccordingToBlock(lastBlock);
+
+        onRaiseBlock?.Invoke();
+        if (lastBlock.Top.position.y >= lastPosYOfBlock + limitBlockHeightWithPlayer)
+        {
+            InputReleaseJumpInPlace();
+        }
+    }
+
+    private void InputReleaseJumpInPlace()
     {
         if (isInputRelease) return;
 
+        Debug.Log("release in place");
+        isInputDown = false;
+        isInputRelease = true;
+        lastBlock.UpdateTop();
+        player.UpdatePositionAccordingToBlock(lastBlock);
+        player.ResetJumpInPlace();
+        onPlayerJump?.Invoke();
+    }
+
+    public void UpdatePositionOfOtherBlockJumpInPlace()
+    {
+        
+        currentBlock.UpdateTopUnderCamera();
+        
+    }
+    private void InputRelease()
+    {
+        if (isInputRelease ) return;
+
+        if (currentBlock.TopPos.y < lastBlock.Top.position.y + minHeightJump)
+        {
+            currentBlock.AddHeightUntilReach(lastBlock.Top.position.y + minHeightJump, blockSpeed, () =>
+            {
+                isInputDown = false;
+                isInputRelease = true;
+                currentBlock.UpdateTop();
+                player.JumpTo(currentBlock);
+                onPlayerJump?.Invoke();
+                SwapBlock();
+            });
+            return;
+        }
         isInputDown = false;
         isInputRelease = true;
         currentBlock.UpdateTop();
         player.JumpTo(currentBlock);
-        SetLastBlockSameHeightWithCurrentBlock();
+        //SetLastBlockSameHeightWithCurrentBlock();
         onPlayerJump?.Invoke();
         SwapBlock();
     }

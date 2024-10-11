@@ -273,6 +273,7 @@ MonoBehaviour:
   jumpDuration: 0.5
   jumpPower: 1
   _animator: {fileID: 949577076}
+  offsetY: 2
   onDoneJump:
     m_PersistentCalls:
       m_Calls: []
@@ -691,7 +692,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 53e914005bf96f440a8a5f24e052a119, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  camOffset: -4
+  camOffset: -5.5
+  camOffsetInPlace: -5.5
 --- !u!1 &2145020863
 GameObject:
   m_ObjectHideFlags: 0

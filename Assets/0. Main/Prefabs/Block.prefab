@@ -24,7 +24,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 157690378223590377}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -61,8 +61,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 8362613317123979885}
   - {fileID: 6019560590738215090}
+  - {fileID: 8362613317123979885}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &5184133529633098793
@@ -79,6 +79,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bottomSpriteRenderer: {fileID: 7723469408401756365}
   topTransform: {fileID: 6019560590738215090}
+  blockDirection: 0
 --- !u!1 &7415627144905723085
 GameObject:
   m_ObjectHideFlags: 0

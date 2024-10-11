@@ -7,9 +7,10 @@ using UnityEngine;
 public class WantBeCamera : MonoBehaviour
 {
     public float camOffset = -2;
-
+    public float camOffsetInPlace = -5.5f;
     Camera cam;
     Player player;
+    
     private void Start()
     {
         WantBeManager.instance.onPlayerJump.AddListener(SnapCam);
@@ -19,9 +20,20 @@ public class WantBeCamera : MonoBehaviour
 
     public void SnapCam()
     {
+        float target = WantBeManager.instance.CurrentBlock.Top.position.y + cam.HalfHeight()*2 ;
+        
+        float offset = camOffset;
+        /*if (WantBeManager.instance.isJumpInPlace)
+        {
+            target += cam.HalfHeight();
+            offset = camOffsetInPlace;
+        }*/
         transform.DOMoveY(
-             WantBeManager.instance.CurrentBlock.Top.position.y + cam.HalfHeight() + camOffset,
-             player.JumpDuration);
+             target + offset,
+             player.JumpDuration).OnComplete(() =>
+        {
+            WantBeManager.instance.UpdatePositionOfOtherBlockJumpInPlace();
+        });
     }
 
     private void OnDestroy()
