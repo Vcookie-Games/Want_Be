@@ -21,6 +21,7 @@ public class Player : MonoBehaviour
     public float JumpDuration { get { return jumpDuration; } }
     public Transform Transform => _transform;
     private Coroutine jumpInPlaceProcess;
+    private Sequence jumpSequence;
 
 
     private void Awake()
@@ -33,15 +34,18 @@ public class Player : MonoBehaviour
 
     public void JumpTo(Block block)
     {
+        ResetJumpInPlace();
         IsJumping = true;
         _animator.SetBool(hashIsJumpAnimator, IsJumping);
-
-        _transform.DOJump(block.Top.position, jumpPower, 1, jumpDuration).OnComplete(() =>
+        if(jumpSequence != null)
+            jumpSequence.Kill();
+        
+        jumpSequence = _transform.DOJump(block.Top.position, jumpPower, 1, jumpDuration).OnComplete(() =>
         {
             onDoneJump?.Invoke();
 
             IsJumping = false;
-
+            Debug.Log("jump complete");
             _transform.localScale = new Vector3
                 (block.Direction == BlockDirection.Right ? 1 : -1,
                 _transform.localScale.y, _transform.localScale.z);
@@ -60,6 +64,7 @@ public class Player : MonoBehaviour
             StopCoroutine(jumpInPlaceProcess);
             jumpInPlaceProcess = null;
         }
+        
         jumpInPlaceProcess = StartCoroutine(JumpInPlaceProcess(jumpDuration, offsetY, _transform.position, block.Top));
     }
 

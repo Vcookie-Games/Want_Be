@@ -16,7 +16,7 @@ public class WantBeManager : MonoBehaviour
     [SerializeField] private float blockSpeed = 7;
     [SerializeField] private float limitBlockHeightWithPlayer = 2;
     [SerializeField] private float minHeightJump = 0.5f;
-
+    
     public BlockDirection startBlockDirection;
 
     private Camera mainCam;
@@ -72,17 +72,16 @@ public class WantBeManager : MonoBehaviour
             }
             return;
         }
-
-        //if (!isJumpInPlace && player.IsJumping) return;
-
+        
         if(Input.GetMouseButtonDown(0))
         {
+            
             if (IsValidInput()) //Input in same field with the position of player
             {
                
                 InputDownAnotherPlace();
             }
-            else
+            else if(!player.IsJumping)
             {
                 //Input is opposite field with position, Jump in place
                InputDownInPlace();
@@ -123,11 +122,13 @@ public class WantBeManager : MonoBehaviour
     {
         isInputDown = true;
         isInputRelease = false;
+        
     }
 
     private void InputDownAnotherPlace()
     {
         isJumpInPlace = false;
+        //player.UpdatePositionAccordingToBlock(lastBlock);
         InputDown();
     }
 
@@ -165,8 +166,8 @@ public class WantBeManager : MonoBehaviour
 
         
         lastBlock.AddHeight(blockSpeed);
-        if(!player.IsJumping)
-            player.UpdatePositionAccordingToBlock(lastBlock);
+        /*if(!player.IsJumping)
+            player.UpdatePositionAccordingToBlock(lastBlock);*/
 
         onRaiseBlock?.Invoke();
         if (lastBlock.Top.position.y >= lastPosYOfBlock + limitBlockHeightWithPlayer)
@@ -178,8 +179,8 @@ public class WantBeManager : MonoBehaviour
     private void InputReleaseJumpInPlace()
     {
         if (isInputRelease) return;
-
         Debug.Log("release in place");
+        
         isInputDown = false;
         isInputRelease = true;
         lastBlock.UpdateTop();
@@ -197,7 +198,6 @@ public class WantBeManager : MonoBehaviour
     private void InputRelease()
     {
         if (isInputRelease ) return;
-
         if (currentBlock.TopPos.y < lastBlock.Top.position.y + minHeightJump)
         {
             currentBlock.AddHeightUntilReach(lastBlock.Top.position.y + minHeightJump, blockSpeed, () =>

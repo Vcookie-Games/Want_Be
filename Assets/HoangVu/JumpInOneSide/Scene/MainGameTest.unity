@@ -742,6 +742,7 @@ MonoBehaviour:
   blockPrefab: {fileID: 5184133529633098793, guid: 638201979debc234fbd1ce9fd462620d, type: 3}
   blockSpeed: 1
   limitBlockHeightWithPlayer: 2
+  minHeightJump: 0.5
   startBlockDirection: 0
   lastBlock: {fileID: 0}
   currentBlock: {fileID: 0}
