@@ -10,7 +10,6 @@ public class Block : MonoBehaviour
     [SerializeField] protected SpriteRenderer bottomSpriteRenderer;
     [SerializeField] protected Transform topTransform;
     [SerializeField] private BlockDirection blockDirection;
-
     public Action<Block> onDespawn;
 
     public float Height => bottomSpriteRenderer.sprite.bounds.size.y
@@ -37,8 +36,13 @@ public class Block : MonoBehaviour
     {
         bottomMaterial.SetVector("_Tiling", bottomSpriteRenderer.transform.localScale);
 
-        UpdateTop();
+        
         //CheckDespawn();
+    }
+
+    protected void FixedUpdate()
+    {
+        UpdateTop();
     }
 
     [ContextMenu("Get Top Pos")]
@@ -105,11 +109,9 @@ public class Block : MonoBehaviour
         
         if (topTransform.position.y < mainCam.transform.position.y - mainCam.orthographicSize)
         {
-            topTransform.position = pos;
             SetHeight(pos.y);
-           
         }
-      
+        
     }
 
     public void ResetHeight()
