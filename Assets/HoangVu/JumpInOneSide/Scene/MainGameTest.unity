@@ -348,8 +348,16 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 4500185403131133575, guid: e42ae26a287cece44a82a95ae4a83761, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 949577078}
   m_SourcePrefab: {fileID: 100100000, guid: e42ae26a287cece44a82a95ae4a83761, type: 3}
+--- !u!1 &764880827 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4500185403131133575, guid: e42ae26a287cece44a82a95ae4a83761, type: 3}
+  m_PrefabInstance: {fileID: 151540520}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &914903375
 GameObject:
   m_ObjectHideFlags: 0
@@ -428,6 +436,18 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3367504031572043492, guid: e42ae26a287cece44a82a95ae4a83761, type: 3}
   m_PrefabInstance: {fileID: 151540520}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &949577078
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764880827}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f4fa34389e639c94583a5abd719f73f8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &958663112
 GameObject:
   m_ObjectHideFlags: 0
@@ -743,6 +763,8 @@ MonoBehaviour:
   blockSpeed: 1
   limitBlockHeightWithPlayer: 2
   minHeightJump: 0.5
+  heightJumpInPlace: 0.5
+  timeToRefreshJump: 0.2
   startBlockDirection: 0
   lastBlock: {fileID: 0}
   currentBlock: {fileID: 0}

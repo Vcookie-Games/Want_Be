@@ -11,7 +11,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpPower = 3;
     [SerializeField] private Animator _animator;
     [SerializeField] private float offsetY;
-
+   
     private Transform _transform;
     private int hashIsJumpAnimator;
 
@@ -35,42 +35,40 @@ public class Player : MonoBehaviour
     public void JumpTo(Block block)
     {
         ResetJumpInPlace();
-        IsJumping = true;
-        _animator.SetBool(hashIsJumpAnimator, IsJumping);
-        if(jumpSequence != null)
+        PlayJumpAnim(true);
+        if (jumpSequence != null)
+        {
             jumpSequence.Kill();
+            _transform.localScale = new Vector3
+            (block.Direction == BlockDirection.Right ? -1 : 1,
+                _transform.localScale.y, _transform.localScale.z);
+        }
         
         jumpSequence = _transform.DOJump(block.Top.position, jumpPower, 1, jumpDuration).OnComplete(() =>
         {
             onDoneJump?.Invoke();
 
-            IsJumping = false;
-            Debug.Log("jump complete");
+            
             _transform.localScale = new Vector3
                 (block.Direction == BlockDirection.Right ? 1 : -1,
                 _transform.localScale.y, _transform.localScale.z);
             //_transform.DOScaleX(block.Direction == BlockDirection.Right ? 1 : -1, jumpDuration / 2f);
-
-            _animator.SetBool(hashIsJumpAnimator, IsJumping);
+            
+           PlayJumpAnim(false);
+           jumpSequence=null;
         });
     }
 
     public void JumpInPlace(Block block)
     {
-        IsJumping = true;
-        _animator.SetBool(hashIsJumpAnimator, IsJumping);
-        if (jumpInPlaceProcess != null)
-        {
-            StopCoroutine(jumpInPlaceProcess);
-            jumpInPlaceProcess = null;
-        }
+        ResetJumpInPlace();
+        PlayJumpAnim(true);
         
         jumpInPlaceProcess = StartCoroutine(JumpInPlaceProcess(jumpDuration, offsetY, _transform.position, block.Top));
     }
 
     IEnumerator JumpInPlaceProcess(float duration, float height,Vector3 from, Transform to)
     {
-        IsJumping = true;
         float time = 0f;
         _transform.position = from;
        
@@ -88,16 +86,14 @@ public class Player : MonoBehaviour
         _transform.position = to.position;
         onDoneJump?.Invoke();
 
-        IsJumping = false;
-        
-
-        _animator.SetBool(hashIsJumpAnimator, IsJumping);
+        PlayJumpAnim(false);
     }
 
-    public void JumpEnd()
+    public void PlayJumpAnim(bool value)
     {
-        IsJumping = false;
+        IsJumping = value;
         _animator.SetBool(hashIsJumpAnimator, IsJumping);
+        
     }
     private Vector3 QuadraticLerpLockYAxis(Vector3 from, Vector3 to, float speed,Vector3 P1)
     {
@@ -117,14 +113,8 @@ public class Player : MonoBehaviour
             jumpInPlaceProcess = null;
         }
 
-        IsJumping = false;
-        _animator.SetBool(hashIsJumpAnimator, IsJumping);
+        PlayJumpAnim(false);
     }
-
-    private void DisableJump()
-    {
-        IsJumping = false;
-        _animator.SetBool(hashIsJumpAnimator, IsJumping);
-    }
+    
         
 }

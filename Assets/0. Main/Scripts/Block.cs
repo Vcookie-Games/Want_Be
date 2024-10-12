@@ -21,6 +21,7 @@ public class Block : MonoBehaviour
     protected Material bottomMaterial;
     protected Camera mainCam;
 
+    private Coroutine currentAddHeightCoroutine;
     public Vector3 TopPos =>transform.position + Vector3.up * Height;
     protected virtual void Awake()
     {
@@ -67,7 +68,9 @@ public class Block : MonoBehaviour
 
     public void AddHeightUntilReach(float destinationY,float speed, Action onComplete)
     {
-        StartCoroutine(AddHeightUntilReachProcess(destinationY, speed, onComplete));
+        if(currentAddHeightCoroutine != null)
+            StopCoroutine(currentAddHeightCoroutine);
+        currentAddHeightCoroutine=    StartCoroutine(AddHeightUntilReachProcess(destinationY, speed, onComplete));
     }
 
     IEnumerator AddHeightUntilReachProcess(float destinationY,float speed, Action onComplete)

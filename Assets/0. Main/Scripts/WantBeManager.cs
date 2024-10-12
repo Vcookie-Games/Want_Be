@@ -16,7 +16,10 @@ public class WantBeManager : MonoBehaviour
     [SerializeField] private float blockSpeed = 7;
     [SerializeField] private float limitBlockHeightWithPlayer = 2;
     [SerializeField] private float minHeightJump = 0.5f;
-    
+    [SerializeField] private float heightJumpInPlace;
+    [SerializeField] private float timeToRefreshJump;
+
+    private float currentTimeToRefreshJump;
     public BlockDirection startBlockDirection;
 
     private Camera mainCam;
@@ -72,6 +75,7 @@ public class WantBeManager : MonoBehaviour
             }
             return;
         }
+
         
         if(Input.GetMouseButtonDown(0))
         {
@@ -83,36 +87,25 @@ public class WantBeManager : MonoBehaviour
             }
             else if(!player.IsJumping)
             {
+                
                 //Input is opposite field with position, Jump in place
                InputDownInPlace();
             }
         }
-        else if (Input.GetMouseButton(0))
+        else if (Input.GetMouseButtonUp(0) )
         {
-
-            if (!isJumpInPlace)
+            if (!isInputRelease)
             {
-                InputHolding();
-
+                currentTimeToRefreshJump = timeToRefreshJump;
+                isInputRelease = true;
+               
             }
-            else
-            {
-                InputHoldingJumpInPlace();
-
-            }
-        }
-        else if (Input.GetMouseButtonUp(0))
-        {
             
-            if (!isJumpInPlace)
-            {
-                InputRelease();
-            }
-            else
-            {
-                InputReleaseJumpInPlace();
-            }
         }
+
+        
+      
+       
     }
 
     bool isInputDown = false;
@@ -122,7 +115,6 @@ public class WantBeManager : MonoBehaviour
     {
         isInputDown = true;
         isInputRelease = false;
-        
     }
 
     private void InputDownAnotherPlace()
@@ -130,6 +122,16 @@ public class WantBeManager : MonoBehaviour
         isJumpInPlace = false;
         //player.UpdatePositionAccordingToBlock(lastBlock);
         InputDown();
+        
+        currentBlock.AddHeightUntilReach(lastBlock.Top.position.y + minHeightJump, blockSpeed, () =>
+        {
+            isInputDown = false;
+            isInputRelease = true;
+            currentBlock.UpdateTop();
+            player.JumpTo(currentBlock);
+            onPlayerJump?.Invoke();
+            SwapBlock();
+        });
     }
 
     private void InputDownInPlace()
@@ -138,7 +140,17 @@ public class WantBeManager : MonoBehaviour
         lastPosYOfBlock = lastBlock.Top.position.y;
         player.JumpInPlace(lastBlock);
         isJumpInPlace = true;
+        lastBlock.AddHeightUntilReach(lastBlock.Top.position.y + heightJumpInPlace, blockSpeed, () =>
+        {
+            isInputDown = false;
+            isInputRelease = true;
+            lastBlock.UpdateTop();
+            //player.UpdatePositionAccordingToBlock(lastBlock);
+            //player.ResetJumpInPlace();
+            onPlayerJump?.Invoke();
+        });
     }
+    
     private void InputHolding()
     {
         if (!isInputDown)
@@ -163,12 +175,8 @@ public class WantBeManager : MonoBehaviour
         {
             return;
         }
-
         
         lastBlock.AddHeight(blockSpeed);
-        /*if(!player.IsJumping)
-            player.UpdatePositionAccordingToBlock(lastBlock);*/
-
         onRaiseBlock?.Invoke();
         if (lastBlock.Top.position.y >= lastPosYOfBlock + limitBlockHeightWithPlayer)
         {
@@ -198,19 +206,7 @@ public class WantBeManager : MonoBehaviour
     private void InputRelease()
     {
         if (isInputRelease ) return;
-        if (currentBlock.TopPos.y < lastBlock.Top.position.y + minHeightJump)
-        {
-            currentBlock.AddHeightUntilReach(lastBlock.Top.position.y + minHeightJump, blockSpeed, () =>
-            {
-                isInputDown = false;
-                isInputRelease = true;
-                currentBlock.UpdateTop();
-                player.JumpTo(currentBlock);
-                onPlayerJump?.Invoke();
-                SwapBlock();
-            });
-            return;
-        }
+       
         isInputDown = false;
         isInputRelease = true;
         currentBlock.UpdateTop();
