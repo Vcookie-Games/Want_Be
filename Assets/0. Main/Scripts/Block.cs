@@ -10,7 +10,6 @@ public class Block : MonoBehaviour
     [SerializeField] protected SpriteRenderer bottomSpriteRenderer;
     [SerializeField] protected Transform topTransform;
     [SerializeField] private BlockDirection blockDirection;
-
     public Action<Block> onDespawn;
 
     public float Height => bottomSpriteRenderer.sprite.bounds.size.y
@@ -21,6 +20,8 @@ public class Block : MonoBehaviour
     protected Material bottomMaterial;
     protected Camera mainCam;
 
+    private Coroutine currentAddHeightCoroutine;
+    public Vector3 TopPos =>transform.position + Vector3.up * Height;
     protected virtual void Awake()
     {
         mainCam = Camera.main;
@@ -35,8 +36,24 @@ public class Block : MonoBehaviour
     {
         bottomMaterial.SetVector("_Tiling", bottomSpriteRenderer.transform.localScale);
 
+        
+        //CheckDespawn();
+    }
+
+    protected void FixedUpdate()
+    {
+        UpdateTop();
+    }
+
+    [ContextMenu("Get Top Pos")]
+    public void GetTopPosition()
+    {
+        Debug.Log(Top.position + " " + TopPos);
+    }
+
+    public void UpdateTop()
+    {
         topTransform.position = transform.position + Vector3.up * Height;
-        CheckDespawn();
     }
 
     public virtual void CheckDespawn()
@@ -53,6 +70,24 @@ public class Block : MonoBehaviour
         bottomSpriteRenderer.transform.localScale += new Vector3(0, speed * Time.deltaTime, 0);
     }
 
+    public void AddHeightUntilReach(float destinationY,float speed, Action onComplete)
+    {
+        if(currentAddHeightCoroutine != null)
+            StopCoroutine(currentAddHeightCoroutine);
+        currentAddHeightCoroutine=    StartCoroutine(AddHeightUntilReachProcess(destinationY, speed, onComplete));
+    }
+
+    IEnumerator AddHeightUntilReachProcess(float destinationY,float speed, Action onComplete)
+    {
+        //Debug.Log(destinationY);
+        while (TopPos.y < destinationY)
+        {
+            AddHeight(speed);
+            yield return null;
+        }
+        onComplete.Invoke();
+    }
+
     public void SetHeight(float height)
     {
         var localScale = bottomSpriteRenderer.transform.localScale;
@@ -64,6 +99,19 @@ public class Block : MonoBehaviour
     {
         height /= bottomSpriteRenderer.sprite.bounds.size.y;
         bottomSpriteRenderer.transform.DOScaleY(height, tweenDuration);
+    }
+
+    public void UpdateTopUnderCamera()
+    {
+        //Debug.Log("Check update Top pos " + topTransform.position.y +" cam pos "+mainCam.transform.position.y + " "+ (mainCam.transform.position.y - mainCam.orthographicSize));
+        var pos = topTransform.position;
+        pos.y = mainCam.transform.position.y;
+        
+        if (topTransform.position.y < mainCam.transform.position.y - mainCam.orthographicSize)
+        {
+            SetHeight(pos.y);
+        }
+        
     }
 
     public void ResetHeight()
@@ -83,14 +131,7 @@ public class Block : MonoBehaviour
 
     public BlockDirection GetInvertDirection()
     {
-        switch (blockDirection)
-        {
-            case BlockDirection.Left:
-                return BlockDirection.Right;
-            case BlockDirection.Right:
-                return BlockDirection.Left;
-        }
-        return BlockDirection.None;
+        return GetInvertDirection(blockDirection);
     }
 
     public static BlockDirection GetInvertDirection(BlockDirection blockDirection)
