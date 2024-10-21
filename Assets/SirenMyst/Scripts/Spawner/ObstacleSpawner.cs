@@ -7,23 +7,37 @@ public class ObstacleSpawner : Spawner
     protected static ObstacleSpawner instance;
     public static ObstacleSpawner Instance => instance;
 
-    public static string stilts = "Stilts";
-    public static string farmer = "Farmer";
-    public static string farmerPoleElectric_1 = "FarmerPoleElectric_1";
-    public static string farmerPoleElectric_2 = "FarmerPoleElectric_2";
+    public static readonly string[] Farmers = {
+        "Farmer",
+        "FarmerPoleElectric_1",
+        "FarmerPoleElectric_2",
+        "FarmerBanana_1",
+        "FarmerBanana_2",
+        "FarmerBanana_3",
+        "FarmerBanana_4"
+    };
 
-    public static string FarmerBanana_1 = "FarmerBanana_1";
-    public static string FarmerBanana_2 = "FarmerBanana_2";
-    public static string FarmerBanana_3 = "FarmerBanana_3";
-    public static string FarmerBanana_4 = "FarmerBanana_4";
+    public static readonly string[] Stilts = {
+        "Stilts",
+        "StiltsHouse_1",
+        "StiltsHouse_2",
+        "StiltsHouse_3",
+        "StiltsHouse_4",
+        "StiltsHouse_5",
+        "StiltsHouse_6",
+        "StiltsHouse_7"
+    };
 
-    public static string StiltsHouse_1 = "StiltsHouse_1";
-    public static string StiltsHouse_2 = "StiltsHouse_2";
-    public static string StiltsHouse_3 = "StiltsHouse_3";
-    public static string StiltsHouse_4 = "StiltsHouse_4";
-    public static string StiltsHouse_5 = "StiltsHouse_5";
-    public static string StiltsHouse_6 = "StiltsHouse_6";
-    public static string StiltsHouse_7 = "StiltsHouse_7";
+    public static readonly string[] StiltHousesV2 = {
+        "StiltHouseV2_1",
+        "StiltHouseV2_2",
+        "StiltHouseV2_3",
+        "BacLieuHouseV2",
+        "AncientHouseV2",
+        "VillaV2_1",
+        "VillaV2_2",
+        "VillaV2_3"
+    };
 
     protected override void Awake()
     {
