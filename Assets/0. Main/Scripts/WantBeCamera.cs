@@ -10,7 +10,7 @@ public class WantBeCamera : MonoBehaviour
     public float camOffsetInPlace = -5.5f;
     Camera cam;
     Player player;
-    
+
     private void Start()
     {
         WantBeManager.instance.onPlayerJump.AddListener(SnapCam);
@@ -20,8 +20,8 @@ public class WantBeCamera : MonoBehaviour
 
     public void SnapCam()
     {
-        float target = WantBeManager.instance.CurrentBlock.Top.position.y + cam.HalfHeight()*2 ;
-        
+        float target = WantBeManager.instance.CurrentBlock.Top.position.y + cam.HalfHeight() * 2;
+
         float offset = camOffset;
         /*if (WantBeManager.instance.isJumpInPlace)
         {
@@ -31,9 +31,9 @@ public class WantBeCamera : MonoBehaviour
         transform.DOMoveY(
              target + offset,
              player.JumpDuration).OnComplete(() =>
-        {
-            WantBeManager.instance.UpdatePositionOfOtherBlockJumpInPlace();
-        });
+             {
+                 WantBeManager.instance.UpdatePositionOfOtherBlockJumpInPlace();
+             });
     }
 
     private void OnDestroy()
