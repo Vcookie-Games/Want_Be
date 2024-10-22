@@ -10,6 +10,7 @@ public class Block : MonoBehaviour
     [SerializeField] protected SpriteRenderer bottomSpriteRenderer;
     [SerializeField] protected Transform topTransform;
     [SerializeField] private BlockDirection blockDirection;
+    [SerializeField] private float offsetUnderCam;
     public Action<Block> onDespawn;
 
     public float Height => bottomSpriteRenderer.sprite.bounds.size.y
@@ -105,7 +106,7 @@ public class Block : MonoBehaviour
     {
         //Debug.Log("Check update Top pos " + topTransform.position.y +" cam pos "+mainCam.transform.position.y + " "+ (mainCam.transform.position.y - mainCam.orthographicSize));
         var pos = topTransform.position;
-        pos.y = mainCam.transform.position.y;
+        pos.y = mainCam.transform.position.y-offsetUnderCam;
         
         if (topTransform.position.y < mainCam.transform.position.y - mainCam.orthographicSize)
         {

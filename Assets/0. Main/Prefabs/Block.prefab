@@ -179,6 +179,7 @@ MonoBehaviour:
   bottomSpriteRenderer: {fileID: 7723469408401756365}
   topTransform: {fileID: 6019560590738215090}
   blockDirection: 0
+  offsetUnderCam: 0.5
 --- !u!1 &7415627144905723085
 GameObject:
   m_ObjectHideFlags: 0
