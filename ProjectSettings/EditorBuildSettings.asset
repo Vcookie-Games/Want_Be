@@ -5,13 +5,16 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/0. Main/Scenes/ReadyScene.unity
     guid: 36dbc8c148c0763489c3aa705a390ced
-  - enabled: 1
+  - enabled: 0
     path: Assets/0. Main/Scenes/MainMenu.unity
     guid: 682a210d4b68f264ca0704b090070792
-  - enabled: 1
+  - enabled: 0
     path: Assets/0. Main/Scenes/MainGame.unity
     guid: 62c0874f211c1cb408f286103b22dfaa
+  - enabled: 1
+    path: Assets/HoangVu/JumpInOneSide/Scene/TestGameplayScene.unity
+    guid: 655ee9a127ae9a444ae90dbf68fa278c
   m_configObjects: {}
