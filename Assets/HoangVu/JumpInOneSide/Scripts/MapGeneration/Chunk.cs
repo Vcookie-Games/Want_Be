@@ -5,9 +5,15 @@ using UnityEngine;
 public class Chunk : GameUnit
 {
    [SerializeField] private Transform topPosition;
-   public void Init(Vector2 pos)
+   [SerializeField] private List<ChunkArtifact> artifacts;
+   public void Init(Vector2 pos, Vector3 scale)
    {
-      transform.position = pos;
+      Tf.localScale = scale;
+      Tf.position = pos;
+      foreach (var artifact in artifacts)
+      {
+         artifact.OnInit();
+      }
    }
 
    public Vector2 GetTopPosition()

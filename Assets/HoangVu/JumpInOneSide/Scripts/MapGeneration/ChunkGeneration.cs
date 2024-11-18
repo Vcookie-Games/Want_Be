@@ -38,7 +38,7 @@ public class ChunkGeneration : Singleton<ChunkGeneration>
         var chunk = ReuseSystem.SimplePool.Instance.Spawn<Chunk>(GetRandomChunkPattern(),position);
         var currentScale = chunk.transform.localScale;
         currentScale.x = GameController.Instance.GetAspectCompareToNormalScreen();
-        chunk.transform.localScale = currentScale;
+        chunk.Init(position, currentScale);
         return chunk;
     }
 

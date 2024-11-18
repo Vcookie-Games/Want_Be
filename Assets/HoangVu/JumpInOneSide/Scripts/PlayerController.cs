@@ -69,7 +69,7 @@ namespace HoangVuCode
                     )
                 {
                     isJump = true;
-                    SetState(PlayerState.PlayerJump);
+                    Jump();
                 }
                 else
                 {
@@ -198,10 +198,6 @@ namespace HoangVuCode
             {
                 SetDirection(currentDirectionX);
             }
-            else if (state == PlayerState.PlayerJump)
-            {
-                Jump();
-            }
 
             smokeTrailGameObject.SetActive(state == PlayerState.PlayerJetPack);
         }
@@ -238,6 +234,13 @@ namespace HoangVuCode
         void Jump()
         {
             rigidbody2D.AddForce(Vector2.up*jumpForce, ForceMode2D.Impulse);
+            SetState(PlayerState.PlayerJump);
+        }
+
+        public void AddJumpForce(float force)
+        {
+            rigidbody2D.AddForce(Vector2.up * force, ForceMode2D.Impulse);
+            SetState(PlayerState.PlayerJump);
         }
         
         void SetDirection(float x)
