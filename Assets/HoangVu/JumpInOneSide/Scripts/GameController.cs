@@ -55,6 +55,7 @@ namespace HoangVuCode
         public enum EGameState
         {
             GameLoop,
+            MoveCam,
             GameOver
         }
 
@@ -140,6 +141,7 @@ namespace HoangVuCode
             
             if (isPlayerAboveScreen)
             {
+                SetState(EGameState.MoveCam);
                 isPlayerAboveScreen = false;
                 player.StopMovement();
                 cameraController.MoveTo(player.transform.position.y - offsetToCam);
@@ -148,6 +150,7 @@ namespace HoangVuCode
 
         void UpdateAfterCamReachAbove()
         {
+            SetState(EGameState.GameLoop);
             player.RefreshMovement();
             //ChunkGeneration.Instance.CheckUpdateNextChunk(highestPlayerY);
             moveTriggerTransform.position = cameraController.GetTriggerMovePosition();
