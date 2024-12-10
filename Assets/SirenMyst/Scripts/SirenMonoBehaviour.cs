@@ -2,37 +2,40 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SirenMonoBehaviour : MonoBehaviour
+namespace SirenMyst
 {
-    protected virtual void Awake()
+    public class SirenMonoBehaviour : MonoBehaviour
     {
-        this.LoadComponents();
-    }
-    protected virtual void Start()
-    {
-        //For override
-    }
+        protected virtual void Awake()
+        {
+            this.LoadComponents();
+        }
+        protected virtual void Start()
+        {
+            //For override
+        }
 
-    protected virtual void Reset()
-    {
-        this.LoadComponents();
-        this.ResetValue();
-    }
+        protected virtual void Reset()
+        {
+            this.LoadComponents();
+            this.ResetValue();
+        }
 
-    protected virtual void LoadComponents()
-    {
-        //For override
-    }
-    protected virtual void ResetValue()
-    {
-        //For override
-    }
-    protected virtual void OnEnable()
-    {
-        //For override
-    }
-    protected virtual void OnDisable()
-    {
-        //For override
+        protected virtual void LoadComponents()
+        {
+            //For override
+        }
+        protected virtual void ResetValue()
+        {
+            //For override
+        }
+        protected virtual void OnEnable()
+        {
+            //For override
+        }
+        protected virtual void OnDisable()
+        {
+            //For override
+        }
     }
 }

@@ -2,9 +2,12 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-[System.Serializable]
-public class Sound
+namespace SirenMyst
 {
-    public string name;
-    public AudioClip clip;
+    [System.Serializable]
+    public class Sound
+    {
+        public string name;
+        public AudioClip clip;
+    }
 }

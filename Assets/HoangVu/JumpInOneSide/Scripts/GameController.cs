@@ -38,6 +38,13 @@ namespace HoangVuCode
         [SerializeField] private bool isMoveCameraImmediately;
         [SerializeField] private float offsetMoveCamImmediately;
 
+        #region Actions
+
+        public Action<int> OnCoinChange;
+        
+
+        #endregion
+        private int currentCoin;
         private bool IsUsingCamMoveImmediately
         {
             get => PlayerPrefs.GetInt("IsCamMoveImmediately", 0) == 1;
@@ -66,6 +73,7 @@ namespace HoangVuCode
 
         void OnInit()
         {
+            currentCoin = 0;
             isMoveCameraImmediately = IsUsingCamMoveImmediately;
             highestPlayerY = player.transform.position.y;
             ChunkGeneration.Instance.InitGenerateChunk(cameraController.GetBottomPositionOfScreen());
@@ -89,6 +97,10 @@ namespace HoangVuCode
             return cameraController.Aspect / 0.5625f;
         }
 
+        public PlayerController GetPlayerController()
+        {
+            return player;
+        }
         public void SetPlayerAboveScreen(bool value)
         {
             isPlayerAboveScreen = value;
@@ -106,6 +118,12 @@ namespace HoangVuCode
                 ChunkGeneration.Instance.CheckUpdateNextChunk(highestPlayerY);
                 MoveCamAbove();
             }
+        }
+
+        public void AddCoin()
+        {
+            currentCoin += 1;
+            OnCoinChange?.Invoke(currentCoin);
         }
 
         void MoveCamImmediately()
@@ -173,7 +191,9 @@ namespace HoangVuCode
         {
             SetState(EGameState.GameOver);
             gameOverPanel.SetActive(true);
+            player.StopMovement();
         }
+        
 
         public void ReloadScene()
         {
