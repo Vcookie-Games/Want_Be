@@ -3392,9 +3392,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunkPatterns:
-  - {fileID: 1491541476407992231, guid: 6da52e48c546f1d46bf4a77e540cfea7, type: 3}
-  - {fileID: 3901375521865134649, guid: b1692da32ec058a49b78914c07a2a684, type: 3}
-  - {fileID: 890778911191849881, guid: 338e000d27319014e82a91f954de5040, type: 3}
+  - {fileID: 8062901624416112887, guid: 8347c8ca2631cf6478276f4c38408e7a, type: 3}
+  - {fileID: 932729581903375449, guid: 67a8eb4e002f29b4ca43f0c0fa9a3a27, type: 3}
   numberOfChunkLoad: 2
 --- !u!4 &2141109659
 Transform:

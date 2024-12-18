@@ -93,7 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  timeWaitForMove: 1
+  timeWaitForMove: 2
   timeMove: 5
 --- !u!1001 &17772802472579775
 PrefabInstance:

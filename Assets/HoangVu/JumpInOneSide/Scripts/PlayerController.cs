@@ -242,6 +242,15 @@ namespace HoangVuCode
             rigidbody2D.AddForce(Vector2.up * force, ForceMode2D.Impulse);
             SetState(PlayerState.PlayerJump);
         }
+
+        public void AddJumpForceContinuous(float force)
+        {
+            rigidbody2D.AddForce(Vector2.up*force*Time.deltaTime, ForceMode2D.Impulse);
+            if (!IsInState(PlayerState.PlayerJump))
+            {
+                SetState(PlayerState.PlayerJump);
+            }
+        }
         
         void SetDirection(float x)
         {
