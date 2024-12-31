@@ -33,15 +33,15 @@ namespace HoangVuCode
         private float currentTimeToUseJetPack;
         private Rigidbody2D rigidbody2D;
         private RaycastHit2D currentGroundCheck;
-        
+        private float currentSpeed;
 
         public enum PlayerState
         {
-            PlayerMoveLeftRight,
-            PlayerJump,
-            PlayerFall,
-            PlayerStop,
-            PlayerJetPack
+            PlayerMoveLeftRight=0,
+            PlayerJump=1,
+            PlayerFall=2,
+            PlayerStop=3,
+            PlayerJetPack=4
         }
     
         private float currentDirectionX;
@@ -53,6 +53,7 @@ namespace HoangVuCode
     
         void Start()
         {
+            currentSpeed = speed;
             currentJetPackFuel = maxJetPackFuel;
             transform.localScale = GameController.Instance.GetAspectCompareToNormalScreen() * Vector3.one;
            SetDirection(1f);
@@ -251,11 +252,21 @@ namespace HoangVuCode
                 SetState(PlayerState.PlayerJump);
             }
         }
+
+        public void AddSpeed(float modify)
+        {
+            currentSpeed *= modify;
+        }
+
+        public void ResetSpeed()
+        {
+            currentSpeed = speed;
+        }
         
         void SetDirection(float x)
         {
             currentDirectionX = x;
-            rigidbody2D.velocity = new Vector2(x*speed, rigidbody2D.velocity.y);
+            rigidbody2D.velocity = new Vector2(x*currentSpeed, rigidbody2D.velocity.y);
         }
     
         void ReverseMovement()

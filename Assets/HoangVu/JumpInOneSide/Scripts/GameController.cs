@@ -102,6 +102,11 @@ namespace HoangVuCode
         {
             return player;
         }
+
+        public CameraController GetCameraController()
+        {
+            return cameraController;
+        }
         public void SetPlayerAboveScreen(bool value)
         {
             isPlayerAboveScreen = value;
