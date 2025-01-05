@@ -3219,7 +3219,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: 21300000, guid: 1d2c6b23a064f1f4ca36dc943c003e9d, type: 3}
+  m_Sprite: {fileID: 21300000, guid: c3bf9c24dcd18344580fd33c166eefd1, type: 3}
   m_Type: 0
   m_PreserveAspect: 0
   m_FillCenter: 1
@@ -3253,6 +3253,9 @@ MonoBehaviour:
   backgroundSprites:
   - {fileID: 21300000, guid: 1d2c6b23a064f1f4ca36dc943c003e9d, type: 3}
   - {fileID: 21300000, guid: c337d2439bc27ba4bbe2ad2eafa58dde, type: 3}
+  - {fileID: 21300000, guid: bfece50253981e14bb160c133af50ec1, type: 3}
+  - {fileID: 21300000, guid: c3bf9c24dcd18344580fd33c166eefd1, type: 3}
+  - {fileID: 21300000, guid: 7b8dfb802c02bf84690624ef1c40db4f, type: 3}
   randomDelay: 60
   randomTimer: 0
   x: 0
@@ -4440,6 +4443,7 @@ MonoBehaviour:
   - {fileID: 3218004519400823559, guid: a7a0e400c313e2c47bed6fdca5e52958, type: 3}
   - {fileID: 274057521274139732, guid: 09a166281c6ed40469ad99a04935fcc6, type: 3}
   - {fileID: 6651026862367680060, guid: e6330e43621197c4bb7e5116fde285d4, type: 3}
+  - {fileID: 5258564623300111016, guid: f0f5cd66996e4e545b79977f36bdb1c6, type: 3}
   numberOfChunkLoad: 2
 --- !u!4 &2141109659
 Transform:
