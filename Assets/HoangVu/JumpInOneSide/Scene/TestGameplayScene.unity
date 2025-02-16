@@ -2766,7 +2766,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &1781489660
 Transform:
   m_ObjectHideFlags: 0
@@ -3570,8 +3570,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunkPatterns:
-  - {fileID: 8062901624416112887, guid: 8347c8ca2631cf6478276f4c38408e7a, type: 3}
-  - {fileID: 1145551033595200133, guid: b4732782ae1912942b58495a626b5248, type: 3}
+  - {fileID: 8186770842019211725, guid: a058b7efb49f6444485103f73831df5f, type: 3}
+  - {fileID: 6569474977438130548, guid: f1327b9158702ec41aa6400df4b31d79, type: 3}
+  - {fileID: 1150618227465202003, guid: b101ac71a07204a46ad3c1596d41732e, type: 3}
   numberOfChunkLoad: 2
 --- !u!4 &2141109659
 Transform:
