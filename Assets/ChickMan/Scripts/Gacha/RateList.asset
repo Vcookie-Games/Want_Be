@@ -1,0 +1,55 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7fffcaf81a5e97d4f8a6adc31cea9c3a, type: 3}
+  m_Name: RateList
+  m_EditorClassIdentifier: 
+  groupRate:
+  - nameGroup: Default
+    rarity: 0
+    rate: 0
+    ItemsList:
+    - {fileID: 11400000, guid: 2c940cb1916564444b4bc9f42bd90acd, type: 2}
+    color: {r: 0.26841927, g: 1, b: 0, a: 1}
+  - nameGroup: Common
+    rarity: 1
+    rate: 80
+    ItemsList:
+    - {fileID: 11400000, guid: 2c940cb1916564444b4bc9f42bd90acd, type: 2}
+    color: {r: 0.24905872, g: 1, b: 0, a: 1}
+  - nameGroup: Uncommon
+    rarity: 2
+    rate: 60
+    ItemsList:
+    - {fileID: 11400000, guid: 0e8eac1981109fe44acbb2dc7541a17b, type: 2}
+    - {fileID: 11400000, guid: b7cb3630acdbd604da2693d49e2d6c6e, type: 2}
+    - {fileID: 11400000, guid: 090e6056e9c7f5248a64a32b8ee3067b, type: 2}
+    color: {r: 0, g: 1, b: 0.848727, a: 1}
+  - nameGroup: Rare
+    rarity: 3
+    rate: 39.999
+    ItemsList:
+    - {fileID: 11400000, guid: 097fef389df8d9145b56b61e6d488851, type: 2}
+    - {fileID: 11400000, guid: 13c72f873aeb11d459b9f1f32f10218a, type: 2}
+    - {fileID: 11400000, guid: 6a0e1fc6ec3b8404699abcf624400e7a, type: 2}
+    - {fileID: 11400000, guid: 64d7f0e8818580943b071b1e0f3d6c68, type: 2}
+    color: {r: 0.94525504, g: 1, b: 0, a: 1}
+  - nameGroup: Epic
+    rarity: 4
+    rate: 0.0001
+    ItemsList:
+    - {fileID: 11400000, guid: b3f8cd9d93b369f4abdaedb7d7b3bda1, type: 2}
+    color: {r: 1, g: 0, b: 0, a: 1}
+  - nameGroup: Legendary
+    rarity: 5
+    rate: 0
+    ItemsList: []
+    color: {r: 1, g: 0, b: 0.85733986, a: 1}

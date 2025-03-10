@@ -4,13 +4,16 @@ using System.Collections.Generic;
 using HoangVuCode;
 using UnityEngine;
 
-public class Spike : ChunkArtifact
+namespace ChickMan
 {
-    private void OnTriggerEnter2D(Collider2D other)
+    public class Spike : ChunkArtifact
     {
-        if (other.CompareTag("Player"))
+        private void OnTriggerEnter2D(Collider2D other)
         {
-            GameController.Instance.GameOver();
+            if (other.CompareTag("Player"))
+            {
+                GameController.Instance.GameOver();
+            }
         }
     }
 }

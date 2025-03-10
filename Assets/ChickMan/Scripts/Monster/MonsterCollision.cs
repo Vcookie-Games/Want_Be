@@ -2,7 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class MonsterCollision : Spike
+namespace ChickMan
 {
-    
+    public class MonsterCollision : Spike
+    {
+
+    }
 }

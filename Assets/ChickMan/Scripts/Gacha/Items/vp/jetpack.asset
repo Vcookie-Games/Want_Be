@@ -1,0 +1,21 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6033d3f88603104b89bf441f99b4371, type: 3}
+  m_Name: jetpack
+  m_EditorClassIdentifier: 
+  nameItem: jet pack
+  description: "S\u1EED d\u1EE5ng jet pack v\xF4 th\u1EDDi h\u1EA1n trong 15s (vi\xEAn
+    2 \u2013 t\u1EC9 l\u1EC7 rate 20%)"
+  Appeared: 0
+  maxAppeared: 3
+  id: vp-01
+  rateDrop: 20
