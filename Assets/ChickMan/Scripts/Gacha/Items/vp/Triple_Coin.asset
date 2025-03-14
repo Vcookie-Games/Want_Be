@@ -1,0 +1,20 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6033d3f88603104b89bf441f99b4371, type: 3}
+  m_Name: Triple_Coin
+  m_EditorClassIdentifier: 
+  nameItem: Triple Coin
+  description: Triple Coin trong 15s
+  Appeared: 0
+  maxAppeared: 3
+  id: vp-02
+  rateDrop: 40

@@ -1,13 +1,17 @@
+using SirenMyst;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class UISoundBtn : SirenMonoBehaviour
+namespace SirenMyst
 {
-    public virtual void ClickSound(string sound)
+    public class UISoundBtn : SirenMonoBehaviour
     {
-        AudioManager.Instance.PlaySFX(sound);
-        AudioManager.Instance.musicSource.Play();
-        Debug.Log("Sound Active");
+        public virtual void ClickSound(string sound)
+        {
+            AudioManager.Instance.PlaySFX(sound);
+            AudioManager.Instance.musicSource.Play();
+        }
     }
+
 }
