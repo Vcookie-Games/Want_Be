@@ -29,7 +29,7 @@ MonoBehaviour:
     rarity: 2
     rate: 60
     ItemsList:
-    - {fileID: 11400000, guid: 0e8eac1981109fe44acbb2dc7541a17b, type: 2}
+    - {fileID: 11400000, guid: 588aa7489bb2cef43a20b2a3fe235f06, type: 2}
     - {fileID: 11400000, guid: b7cb3630acdbd604da2693d49e2d6c6e, type: 2}
     - {fileID: 11400000, guid: 090e6056e9c7f5248a64a32b8ee3067b, type: 2}
     color: {r: 0, g: 1, b: 0.848727, a: 1}
