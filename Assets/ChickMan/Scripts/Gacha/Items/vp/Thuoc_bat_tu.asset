@@ -12,10 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6033d3f88603104b89bf441f99b4371, type: 3}
   m_Name: Thuoc_bat_tu
   m_EditorClassIdentifier: 
-  nameItem: 'Thuoc bat '
-  description: "T\u0103ng t\u1ED1c \u0111\u1ED9 cho nh\xE2n v\u1EADt nh\u01B0ng b\u1EA5t
-    t\u1EED trong 15s "
+  nameItem: 
+  description: 
   Appeared: 0
-  maxAppeared: 3
-  id: vp-03
-  rateDrop: 40
+  maxAppeared: 0
+  id: 
+  rateDrop: 0
