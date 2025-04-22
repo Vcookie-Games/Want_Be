@@ -26,6 +26,8 @@ namespace HoangVuCode
         [SerializeField] private float maxJetPackFuel;
         [SerializeField] private Image fuelStatus;
         [SerializeField] private GameObject smokeTrailGameObject;
+        [SerializeField] private float climbSpeed;
+        [SerializeField] private float forceClimbUp;
         
         private float currentJetPackFuel;
         private bool isJump;
@@ -41,7 +43,8 @@ namespace HoangVuCode
             PlayerJump=1,
             PlayerFall=2,
             PlayerStop=3,
-            PlayerJetPack=4
+            PlayerJetPack=4,
+            PlayerClimb
         }
     
         private float currentDirectionX;
@@ -89,7 +92,7 @@ namespace HoangVuCode
         private void FixedUpdate()
         {
             if (!GameController.Instance.IsInState(GameController.EGameState.GameLoop)) return;
-            if(!IsInState(PlayerState.PlayerStop))
+            if(!IsInState(PlayerState.PlayerStop) && !IsInState(PlayerState.PlayerClimb))
                 SetDirection(currentDirectionX);
             if (IsInState(PlayerState.PlayerMoveLeftRight))
             {
@@ -284,6 +287,33 @@ namespace HoangVuCode
             }
         }
 
+        void OnTriggerEnter2D(Collider2D other)
+        {
+            if (other.CompareTag("Ladder"))
+            {
+                ClimbLadder(other.transform);
+            }
+        }
+
+        private void OnTriggerExit2D(Collider2D other)
+        {
+            if (other.CompareTag("Ladder"))
+            {
+                transform.SetParent(null);
+                rigidbody2D.gravityScale = gravityScale;
+                rigidbody2D.AddForce(Vector2.up * forceClimbUp, ForceMode2D.Impulse);;
+                SetState(PlayerState.PlayerMoveLeftRight);
+            }
+        }
+
+        void ClimbLadder(Transform ladder)
+        {
+            Debug.Log("Climb");
+            transform.SetParent(ladder);
+            SetState(PlayerState.PlayerClimb);
+            rigidbody2D.gravityScale = 0f;
+            rigidbody2D.velocity = Vector2.up * climbSpeed;
+        }
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
