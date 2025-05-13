@@ -14,12 +14,12 @@ namespace ChickMan
         public Rarity rarity;
         [Range(0f, 100f)] public float rate;
         public List<ItemData> ItemsList;
-         public Color color = Color.white;
+        public Color color = Color.white;
         public RateGroup(Rarity rarity)
         {
             this.rarity = rarity;
-            this.nameGroup = rarity.ToString(); 
-            this.ItemsList = new List<ItemData>(); 
+            this.nameGroup = rarity.ToString();
+            this.ItemsList = new List<ItemData>();
         }
     }
     [CreateAssetMenu(fileName = "RateList", menuName = "Game Data/RateList")]
@@ -34,14 +34,14 @@ namespace ChickMan
          new RateGroup(Rarity.Epic),
          new RateGroup(Rarity.Legendary)
         };
-       
+
         public void ResetAppered()
         {
             foreach (var group in groupRate)
             {
-                foreach(var item in group.ItemsList)
+                foreach (var item in group.ItemsList)
                 {
-                    if(item.id.StartsWith("st") && item.Appeared>= item.maxAppeared)
+                    if (item.id.StartsWith("st") && item.Appeared >= item.maxAppeared)
                     {
                         item.Appeared = 1;
                     }
@@ -49,11 +49,10 @@ namespace ChickMan
                     {
                         item.Appeared = 0;
                     }
-                    
+
                 }
             }
         }
 
     }
 }
-

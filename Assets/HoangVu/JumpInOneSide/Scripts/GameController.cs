@@ -16,21 +16,21 @@ namespace HoangVuCode
         [SerializeField] private Transform leftColliderTransform;
         [SerializeField] private Transform rightColliderTransform;
         [SerializeField] private float offsetLeftRightCollider;
-        
+
         [Header("Dead Zone")]
         [SerializeField] private Transform deadZoneTransform;
         [SerializeField] private float offsetDeadZone;
-        
+
         [Header("Player")]
         [SerializeField] private PlayerController player;
-        
+
         [Header("Camera")]
         [SerializeField] private CameraController cameraController;
         [SerializeField] private float offsetToCam;
-        
+
         [SerializeField] private Transform moveTriggerTransform;
 
-        
+
         //only for test
         [Header("Testing")]
         [SerializeField] private GameObject gameOverPanel;
@@ -41,10 +41,11 @@ namespace HoangVuCode
         #region Actions
 
         public Action<int> OnCoinChange;
-        
+
 
         #endregion
         private int currentCoin;
+        private int coinMultiplier;
         private bool IsUsingCamMoveImmediately
         {
             get => PlayerPrefs.GetInt("IsCamMoveImmediately", 0) == 1;
@@ -55,6 +56,7 @@ namespace HoangVuCode
         public enum EGameState
         {
             GameLoop,
+            MoveCam,
             GameOver
         }
 
@@ -66,14 +68,15 @@ namespace HoangVuCode
 
         private void Start()
         {
-            
-           OnInit();
-           SetState(EGameState.GameLoop);
+
+            OnInit();
+            SetState(EGameState.GameLoop);
         }
 
         void OnInit()
         {
             currentCoin = 0;
+            coinMultiplier =1;
             isMoveCameraImmediately = IsUsingCamMoveImmediately;
             highestPlayerY = player.transform.position.y;
             ChunkGeneration.Instance.InitGenerateChunk(cameraController.GetBottomPositionOfScreen());
@@ -101,6 +104,11 @@ namespace HoangVuCode
         {
             return player;
         }
+
+        public CameraController GetCameraController()
+        {
+            return cameraController;
+        }
         public void SetPlayerAboveScreen(bool value)
         {
             isPlayerAboveScreen = value;
@@ -122,8 +130,19 @@ namespace HoangVuCode
 
         public void AddCoin()
         {
-            currentCoin += 1;
+            currentCoin += 1 * coinMultiplier;
             OnCoinChange?.Invoke(currentCoin);
+        }
+        
+        // giúp x2, x3 coin nhận được
+        public void SetCoinMultiplier(int multiplier)
+        {
+            if(coinMultiplier >3 && coinMultiplier<1) return ;
+            coinMultiplier = multiplier;
+        }
+        public void resetCoinMultiplier()
+        {
+            coinMultiplier = 1;
         }
 
         void MoveCamImmediately()
@@ -137,9 +156,10 @@ namespace HoangVuCode
 
         void MoveCamAbove()
         {
-            
+
             if (isPlayerAboveScreen)
             {
+                SetState(EGameState.MoveCam);
                 isPlayerAboveScreen = false;
                 player.StopMovement();
                 cameraController.MoveTo(player.transform.position.y - offsetToCam);
@@ -148,6 +168,7 @@ namespace HoangVuCode
 
         void UpdateAfterCamReachAbove()
         {
+            SetState(EGameState.GameLoop);
             player.RefreshMovement();
             //ChunkGeneration.Instance.CheckUpdateNextChunk(highestPlayerY);
             moveTriggerTransform.position = cameraController.GetTriggerMovePosition();
@@ -193,7 +214,7 @@ namespace HoangVuCode
             gameOverPanel.SetActive(true);
             player.StopMovement();
         }
-        
+
 
         public void ReloadScene()
         {
@@ -213,4 +234,3 @@ namespace HoangVuCode
         }
     }
 }
-

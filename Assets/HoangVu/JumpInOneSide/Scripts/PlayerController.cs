@@ -13,7 +13,7 @@ namespace HoangVuCode
         //Jump section
         [SerializeField] private float jumpForce;
         [SerializeField] private float gravityScale;
-        
+
         [SerializeField] private Transform checkGroundPoint;
         [SerializeField] private LayerMask groundLayerMask;
         [SerializeField] private Vector2 size;
@@ -26,37 +26,41 @@ namespace HoangVuCode
         [SerializeField] private float maxJetPackFuel;
         [SerializeField] private Image fuelStatus;
         [SerializeField] private GameObject smokeTrailGameObject;
-        
+
         private float currentJetPackFuel;
         private bool isJump;
         private bool isMouseDown;
         private float currentTimeToUseJetPack;
         private Rigidbody2D rigidbody2D;
         private RaycastHit2D currentGroundCheck;
-        
+        private float currentSpeed;
+        private bool isActiveJectpack;
 
         public enum PlayerState
         {
-            PlayerMoveLeftRight,
-            PlayerJump,
-            PlayerFall,
-            PlayerStop,
-            PlayerJetPack
+            PlayerMoveLeftRight = 0,
+            PlayerJump = 1,
+            PlayerFall = 2,
+            PlayerStop = 3,
+            PlayerJetPack = 4
         }
-    
+
         private float currentDirectionX;
         private PlayerState currentState;
         private void Awake()
         {
             rigidbody2D = GetComponent<Rigidbody2D>();
         }
-    
+
         void Start()
         {
+            
+            currentSpeed = speed;
             currentJetPackFuel = maxJetPackFuel;
             transform.localScale = GameController.Instance.GetAspectCompareToNormalScreen() * Vector3.one;
-           SetDirection(1f);
-           SetState(PlayerState.PlayerMoveLeftRight);
+            SetJetpackActive(false);
+            SetDirection(1f);
+            SetState(PlayerState.PlayerMoveLeftRight);
         }
         private void Update()
         {
@@ -76,19 +80,20 @@ namespace HoangVuCode
                     isJump = false;
                 }
             }
-            
+
             if (Input.GetMouseButtonUp(0))
             {
                 isMouseDown = false;
             }
-            AutoGenerateFuel();
-            
+            if (isActiveJectpack) { AutoGenerateFuel(); }
+            ;
+
         }
-        
+
         private void FixedUpdate()
         {
             if (!GameController.Instance.IsInState(GameController.EGameState.GameLoop)) return;
-            if(!IsInState(PlayerState.PlayerStop))
+            if (!IsInState(PlayerState.PlayerStop))
                 SetDirection(currentDirectionX);
             if (IsInState(PlayerState.PlayerMoveLeftRight))
             {
@@ -97,7 +102,7 @@ namespace HoangVuCode
                     SetState(PlayerState.PlayerFall);
                 }
             }
-            else if(IsInState(PlayerState.PlayerJump))
+            else if (IsInState(PlayerState.PlayerJump))
             {
                 if (rigidbody2D.velocity.y <= 0)
                 {
@@ -126,7 +131,7 @@ namespace HoangVuCode
             {
                 ApplyConstantGravity();
             }
-            if (isMouseDown && !isJump)
+            if (isMouseDown && !isJump && isActiveJectpack)
             {
                 HandleUseJetPack();
             }
@@ -148,7 +153,7 @@ namespace HoangVuCode
             if (IsInState(PlayerState.PlayerMoveLeftRight) || IsInState(PlayerState.PlayerStop)) return;
             if (currentTimeToUseJetPack < 0)
             {
-               
+
                 if (currentJetPackFuel > 0)
                 {
                     if (!IsInState(PlayerState.PlayerJetPack))
@@ -174,21 +179,28 @@ namespace HoangVuCode
             {
                 rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, 0);
             }
-            if(rigidbody2D.velocity.y < maxJetPackForce)
+            if (rigidbody2D.velocity.y < maxJetPackForce)
                 rigidbody2D.AddForce(Vector2.up * jetpackForce, ForceMode2D.Force);
             currentJetPackFuel -= Time.deltaTime;
             UpdateFuelStatus();
         }
 
+        // Bật hoặc tắt jetpack
+        public void SetJetpackActive(bool isActive)
+        {
+            isActiveJectpack = isActive;
+            fuelStatus.enabled = isActive;
+        }
+
         void ApplyConstantGravity()
         {
             float currentVelocityY = rigidbody2D.velocity.y;
-            if ( currentVelocityY > minVelocityY)
+            if (currentVelocityY > minVelocityY)
             {
                 rigidbody2D.velocity =
-                    new Vector2(rigidbody2D.velocity.x, currentVelocityY - gravity* Time.deltaTime);
+                    new Vector2(rigidbody2D.velocity.x, currentVelocityY - gravity * Time.deltaTime);
             }
-           
+
         }
 
         void SetState(PlayerState state)
@@ -221,8 +233,8 @@ namespace HoangVuCode
                 rigidbody2D.gravityScale = gravityScale;
             }
         }
-    
-      
+
+
 
         bool CheckGround()
         {
@@ -233,7 +245,7 @@ namespace HoangVuCode
 
         void Jump()
         {
-            rigidbody2D.AddForce(Vector2.up*jumpForce, ForceMode2D.Impulse);
+            rigidbody2D.AddForce(Vector2.up * jumpForce, ForceMode2D.Impulse);
             SetState(PlayerState.PlayerJump);
         }
 
@@ -242,20 +254,39 @@ namespace HoangVuCode
             rigidbody2D.AddForce(Vector2.up * force, ForceMode2D.Impulse);
             SetState(PlayerState.PlayerJump);
         }
-        
+
+        public void AddJumpForceContinuous(float force)
+        {
+            rigidbody2D.AddForce(Vector2.up * force * Time.deltaTime, ForceMode2D.Impulse);
+            if (!IsInState(PlayerState.PlayerJump))
+            {
+                SetState(PlayerState.PlayerJump);
+            }
+        }
+
+        public void AddSpeed(float modify)
+        {
+            currentSpeed *= modify;
+        }
+
+        public void ResetSpeed()
+        {
+            currentSpeed = speed;
+        }
+
         void SetDirection(float x)
         {
             currentDirectionX = x;
-            rigidbody2D.velocity = new Vector2(x*speed, rigidbody2D.velocity.y);
+            rigidbody2D.velocity = new Vector2(x * currentSpeed, rigidbody2D.velocity.y);
         }
-    
+
         void ReverseMovement()
         {
             //Debug.Log("reverse");
             currentDirectionX = currentDirectionX * -1f;
             SetDirection(currentDirectionX);
         }
-    
+
         private void OnCollisionEnter2D(Collision2D other)
         {
             if (other.gameObject.CompareTag("Wall"))
@@ -267,9 +298,8 @@ namespace HoangVuCode
         private void OnDrawGizmos()
         {
             Gizmos.color = Color.yellow;
-            
-            Gizmos.DrawWireCube(checkGroundPoint.position, size );
+
+            Gizmos.DrawWireCube(checkGroundPoint.position, size);
         }
     }
 }
-

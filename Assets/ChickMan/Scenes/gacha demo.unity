@@ -2540,7 +2540,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 43692bb5ed8321347ad3339c35d2c481, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  rateData: {fileID: 11400000, guid: 0f7bbb228a4f534468ec061869722fb6, type: 2}
+  rateData: {fileID: 11400000, guid: 3fcbfb3538316af47a685b89cb9f797d, type: 2}
   gRollx1: {fileID: 286093609}
   gRollx5: {fileID: 1578861149}
   imageRollx1: {fileID: 1199440361}

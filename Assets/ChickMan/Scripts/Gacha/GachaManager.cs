@@ -9,23 +9,24 @@ using System.Data;
 using System.Diagnostics;
 
 
+
 namespace ChickMan
 {
     public class GachaManager : MonoBehaviour
     {
         [SerializeField] private RateData rateData;
         [Space(20)]
-        [SerializeField] public GameObject gRollx1;
-        [SerializeField] public GameObject gRollx5;
-        [SerializeField] public RawImage imageRollx1;
-        [SerializeField] public RawImage[] imageRollx5;
+        [SerializeField] private GameObject gRollx1;
+        [SerializeField] private GameObject gRollx5;
+        [SerializeField] private RawImage imageRollx1;
+        [SerializeField] private RawImage[] imageRollx5;
         [Space(20)]
-        [SerializeField] public HashSet<string> idList = new HashSet<string>();
+        [SerializeField] private HashSet<string> idList = new HashSet<string>();
         [SerializeField] private List_St list_St;
         [SerializeField] private TextMeshProUGUI textCoin;
         [SerializeField] private int coinCostRollX1 = 10;
         [SerializeField] private int coinCostRollX5 = 45;
-        private enum typeRoll { rollx1, rollx5}
+        private enum typeRoll { rollx1, rollx5 }
         [SerializeField] private typeRoll rollCurrent;
         int countTime = 0;
         public int coin = 0;
@@ -46,7 +47,7 @@ namespace ChickMan
             {
                 rollCurrent = typeRoll.rollx1;
                 gRollx1.gameObject.SetActive(true);
-                gRollx5 .gameObject.SetActive(false);
+                gRollx5.gameObject.SetActive(false);
                 RollGacha();
                 ResetLoopTime();
             }
@@ -65,27 +66,27 @@ namespace ChickMan
                 ResetLoopTime();
             }
         }
-        public void RollGacha()
+        private void RollGacha()
         {
 
             RateGroup selectedGroup = GetRandomGroup();
             List<ItemData> validItems = selectedGroup.ItemsList
-                .Where(item => item.Appeared < item.maxAppeared||item.id.StartsWith("st"))
+                .Where(item => item.Appeared < item.maxAppeared || item.id.StartsWith("st"))
                 .ToList();
 
             if (validItems.Count == 0)
             {
                 Debug.LogWarning("Không tìm thấy item hợp lệ để roll!");
-                if (rateData.groupRate.First().ItemsList == null) return ;
+                if (rateData.groupRate.First().ItemsList == null) return;
                 Debug.LogWarning("Lấy item Default !");
                 selectedGroup = rateData.groupRate.FirstOrDefault();
                 validItems = selectedGroup.ItemsList;
-                
+
             }
 
             ItemData selectedItem = GetRandomItem(validItems);
 
-            
+
             if (selectedItem.id.StartsWith("st"))
             {
                 bool isDuplicate = list_St.idListSta.Contains(selectedItem.id) || list_St.idListStb.Contains(selectedItem.id);
@@ -103,17 +104,17 @@ namespace ChickMan
                     }
                 }
                 else
-                {   
+                {
                     GiveBackCoin(selectedItem);
                 }
             }
 
-            
+
             idList.Add(selectedItem.id);
             selectedItem.Appeared++;
 
-            ShowRelsutRoll(selectedItem,selectedGroup);
-          
+            ShowRelsutRoll(selectedItem, selectedGroup);
+
 
         }
         private RateGroup GetRandomGroup()
@@ -158,13 +159,13 @@ namespace ChickMan
 
         public bool SpendCoins(int amount)
         {
-            if (coin >= amount) 
+            if (coin >= amount)
             {
                 coin -= amount;
-                return true; 
+                return true;
             }
             Debug.LogWarning("Không đủ coin!");
-            return false;  
+            return false;
         }
 
         public void GiveBackCoin(ItemData item)
@@ -178,7 +179,7 @@ namespace ChickMan
             {
                 coinRefund += coinCostRollX1 / 4;
             }
-            Debug.Log($"Mảnh {item.id} đã có!trả lại {coinRefund} coin");
+            Debug.Log($"Mảnh {item.id} đã có! trả lại {coinRefund} coin");
             coin += coinRefund;
         }
         public void ShowRelsutRoll(ItemData item, RateGroup rateGroup)
@@ -186,7 +187,7 @@ namespace ChickMan
             TextMeshProUGUI textComponent = null;
 
 
-            switch(rollCurrent)
+            switch (rollCurrent)
             {
                 case typeRoll.rollx5:
                     textComponent = imageRollx5[countTime]?.GetComponentInChildren<TextMeshProUGUI>();
@@ -198,9 +199,9 @@ namespace ChickMan
                     break;
                 default:
                     textComponent = null;
-                     break;
-            }    
-            
+                    break;
+            }
+
             // Kiểm tra và gán text
             if (textComponent != null)
             {
