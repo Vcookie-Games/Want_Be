@@ -271,12 +271,22 @@ namespace HoangVuCode
             currentDirectionX = x;
             rigidbody2D.velocity = new Vector2(x*currentSpeed, rigidbody2D.velocity.y);
         }
-    
+
+        public void SetPosition(Vector2 position)
+        {
+            transform.position = position;
+        }
         void ReverseMovement()
         {
             //Debug.Log("reverse");
             currentDirectionX = currentDirectionX * -1f;
             SetDirection(currentDirectionX);
+        }
+
+        public void OnCheckUpdateCamera()
+        {
+            Debug.Log("Check ground");
+            GameController.Instance.CheckPlayerAboveScreen();
         }
     
         private void OnCollisionEnter2D(Collision2D other)

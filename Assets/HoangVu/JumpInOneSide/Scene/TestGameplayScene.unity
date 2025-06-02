@@ -2578,6 +2578,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e162bd37912477f479890630fd42f4a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  detectPlayerToMoveScreen: {fileID: 1980495520}
   leftColliderTransform: {fileID: 1547013361}
   rightColliderTransform: {fileID: 1250686486}
   offsetLeftRightCollider: 0.625
@@ -3572,7 +3573,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   chunkPatterns:
-  - {fileID: 192629735264662782, guid: a3eb37ed0bb3888429faa669e3c8cbb5, type: 3}
+  - {fileID: 6908298412159903573, guid: bda5b8c627d86c046a51da4d6caf544c, type: 3}
   numberOfChunkLoad: 2
 --- !u!4 &2141109659
 Transform:

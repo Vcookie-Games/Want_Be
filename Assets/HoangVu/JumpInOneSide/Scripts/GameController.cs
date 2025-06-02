@@ -12,6 +12,7 @@ namespace HoangVuCode
     {
 
         private bool isPlayerAboveScreen;
+        [SerializeField] private DetectPlayerToMoveScreen detectPlayerToMoveScreen;
         [Header("Left Right Collider")]
         [SerializeField] private Transform leftColliderTransform;
         [SerializeField] private Transform rightColliderTransform;
@@ -88,6 +89,17 @@ namespace HoangVuCode
             this.currentGameState = state;
         }
 
+        public void CheckPlayerAboveScreen()
+        {
+            if (player.transform.position.y > detectPlayerToMoveScreen.transform.position.y)
+            {
+                SetPlayerAboveScreen(true);
+            }
+            else
+            {
+                SetPlayerAboveScreen(false);
+            }
+        }
         public bool IsInState(EGameState state)
         {
             return currentGameState == state;
