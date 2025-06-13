@@ -34,7 +34,8 @@ namespace HoangVuCode
         private Rigidbody2D rigidbody2D;
         private RaycastHit2D currentGroundCheck;
         private float currentSpeed;
-        private bool isActiveJectpack;
+        private bool isActiveJetpack;
+        private float baseJumpForce;
 
         public enum PlayerState
         {
@@ -54,7 +55,7 @@ namespace HoangVuCode
 
         void Start()
         {
-            
+            baseJumpForce = jumpForce;
             currentSpeed = speed;
             currentJetPackFuel = maxJetPackFuel;
             transform.localScale = GameController.Instance.GetAspectCompareToNormalScreen() * Vector3.one;
@@ -85,7 +86,7 @@ namespace HoangVuCode
             {
                 isMouseDown = false;
             }
-            if (isActiveJectpack) { AutoGenerateFuel(); }
+            if (isActiveJetpack) { AutoGenerateFuel(); }
             ;
 
         }
@@ -131,7 +132,7 @@ namespace HoangVuCode
             {
                 ApplyConstantGravity();
             }
-            if (isMouseDown && !isJump && isActiveJectpack)
+            if (isMouseDown && !isJump && isActiveJetpack)
             {
                 HandleUseJetPack();
             }
@@ -188,7 +189,7 @@ namespace HoangVuCode
         // Bật hoặc tắt jetpack
         public void SetJetpackActive(bool isActive)
         {
-            isActiveJectpack = isActive;
+            isActiveJetpack = isActive;
             fuelStatus.enabled = isActive;
         }
 
@@ -268,10 +269,19 @@ namespace HoangVuCode
         {
             currentSpeed *= modify;
         }
+        public void ChangeJumpForce(float force)
+        {
+            jumpForce *= force;
+        }
+        
 
         public void ResetSpeed()
         {
             currentSpeed = speed;
+        }
+        public void ResetJumpForce()
+        {
+            jumpForce = baseJumpForce;
         }
 
         void SetDirection(float x)

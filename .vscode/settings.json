@@ -54,19 +54,12 @@
         "ProjectSettings/": true,
         "UserSettings/": true,
         "temp/": true,
-<<<<<<< HEAD
         "Temp/": true
     },
+    "omnisharp.useGlobalMono": "always",
+    "csharp.suppressDotnetInstallWarning": true,
+    "csharp.format.enable": true,
+    "editor.suggestSelection": "first",
+    "omnisharp.autoStart": true,
     "dotnet.defaultSolution": "WB.sln"
-=======
-        "Temp/": true,
-        "omnisharp.useGlobalMono": "always",
-        "csharp.suppressDotnetInstallWarning": true,
-        "csharp.format.enable": false,
-        "editor.suggestSelection": "first",
-        "omnisharp.autoStart": true
-        
-    },
-    "dotnet.defaultSolution": "Want be.sln"
->>>>>>> HoangVu
 }

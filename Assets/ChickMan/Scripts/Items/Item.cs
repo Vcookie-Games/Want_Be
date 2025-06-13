@@ -4,6 +4,7 @@ using Unity.VisualScripting;
 using UnityEngine;
 using System.Text.RegularExpressions;
 using ChickMan;
+using UnityEngine.Events;
 
 public abstract class Item : MonoBehaviour
 {
@@ -14,6 +15,7 @@ public abstract class Item : MonoBehaviour
     [SerializeField] protected bool isActive;
     [SerializeField] protected Color color;
     [SerializeField] private GameObject effectTimerPanelPrefab;
+    [SerializeField] protected UnityEvent onActivate;
     private Transform effectTimerPanelParent;
 
     protected float maxDespawnTime;
@@ -23,7 +25,7 @@ public abstract class Item : MonoBehaviour
 
     GameObject panelInstance;
 
-    public float usageTime
+    public float UsageTime
     {
         get { return _usageTime; }
         set
