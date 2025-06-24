@@ -26,7 +26,7 @@ public class BeeSwarm : DeadlyObstacle
         foreach (var bee in beeFollows)
         {
             bee.FollowPlayer(pointPlayer);
-            if (bee.haveCollided)
+            if (bee.haveCollided && !IObstacle.isPlayerProtect)
             {
                 DeActive();
                 gameController.GameOver();

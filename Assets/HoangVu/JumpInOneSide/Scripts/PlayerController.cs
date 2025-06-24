@@ -234,9 +234,7 @@ namespace HoangVuCode
                 rigidbody2D.gravityScale = gravityScale;
             }
         }
-
-
-
+        
         bool CheckGround()
         {
             currentGroundCheck = Physics2D.BoxCast(checkGroundPoint.position, size, 0f,
@@ -282,6 +280,10 @@ namespace HoangVuCode
         public void ResetJumpForce()
         {
             jumpForce = baseJumpForce;
+        }
+        public float getDirectionX()
+        {
+            return currentDirectionX;
         }
 
         void SetDirection(float x)

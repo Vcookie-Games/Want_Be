@@ -21,7 +21,7 @@ public class BeeHiveObstacle : TrapObstacle
   }
   public override void Active()
   {
-    if (!iSActive)
+    if (!isActive)
     {
       StartCoroutine(CountdownTimer(timeSpawnDelay, () =>
       {
@@ -31,18 +31,18 @@ public class BeeHiveObstacle : TrapObstacle
       }));
       
     }
-    iSActive = true;
+    isActive = true;
     _rigidbody2D.bodyType = RigidbodyType2D.Dynamic;
     
   }
 
   public override void DeActive()
   {
-    iSActive = false;
+    isActive = false;
   }
     void OnCollisionEnter2D(Collision2D collision)
     {
-      if (collision.gameObject.CompareTag("Player") && !iSActive)
+      if (collision.gameObject.CompareTag("Player") && !isActive)
       {
         playerController = collision.gameObject.GetComponent<PlayerController>();
         Active();

@@ -50,7 +50,7 @@ public class BlackHole : DeadlyObstacle
 
     protected void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && isActive)
+        if (collision.CompareTag("Player") && isActive && !IObstacle.isPlayerProtect)
         {
             DisPlayer();
             gameController.GameOver();

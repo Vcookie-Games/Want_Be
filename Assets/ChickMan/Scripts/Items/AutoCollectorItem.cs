@@ -32,17 +32,16 @@ public class AutoCollectorItem : Item
     }
 
 
-    void OnTriggerEnter2D(Collider2D collision)
-    {   
+    public override void OnTriggerEnter2D(Collider2D collision)
+    {
         Transform child = transform.GetChild(0);
         CollisionDetector = child.gameObject;
         CollisionDetector.SetActive(false);
         if (collision.CompareTag("Player"))
         {
             playerController = collision.GetComponent<PlayerController>();
-            CheckSame();
-            Debug.Log($"Đã kích hoạt {itemName}");
         }
+        base.OnTriggerEnter2D(collision);
 
 
     }

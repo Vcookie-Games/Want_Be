@@ -66,7 +66,7 @@ public class VortexZone : DeadlyObstacle
     }
     protected void OnTriggerExit2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player"))
+        if (collision.CompareTag("Player") && !IObstacle.isPlayerProtect)
         {
             isBeingPulled = false;
             playerController.transform.localScale = Vector3.one;

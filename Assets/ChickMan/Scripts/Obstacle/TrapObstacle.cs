@@ -7,14 +7,14 @@ using UnityEngine;
 public abstract class TrapObstacle : MonoBehaviour, IObstacle
 {
     
-    bool IObstacle.IsPlayerDead => false;
+    bool IObstacle.isPlayerDead => false;
     [HideInInspector] protected PlayerController playerController; 
     [Header("Status")]
     [SerializeField] protected float timeEffect;
     [SerializeField] protected float timeStun;
     [SerializeField] protected bool canStun;
     [SerializeField] protected bool isStun;
-    [SerializeField] protected bool iSActive;
+    [SerializeField] protected bool isActive;
     [SerializeField] protected int maxHitCount;
 
     [SerializeField] private int currentHitCount;
@@ -22,7 +22,7 @@ public abstract class TrapObstacle : MonoBehaviour, IObstacle
     public TrapObstacle()
     {
         canStun = true;
-        iSActive = false;
+        isActive = false;
         isStun = false;
         maxHitCount = 5;
         currentHitCount = 0;
@@ -41,12 +41,12 @@ public abstract class TrapObstacle : MonoBehaviour, IObstacle
             isStun = true;
             StartCoroutine(CountdownTimer(timeStun, () => DeActive()));
         }
-        else if (!iSActive)
+        else if (!isActive)
         {
             currentHitCount++;
             playerController.AddSpeed(0.2f);
             playerController.ChangeJumpForce(0.5f);
-            iSActive = true;
+            isActive = true;
             StartCoroutine(CountdownTimer(timeEffect, () => DeActive()));
         }
 
@@ -61,16 +61,16 @@ public abstract class TrapObstacle : MonoBehaviour, IObstacle
         }
         playerController.ResetSpeed();
         playerController.ResetJumpForce();
-        iSActive = false;
+        isActive = false;
         isStun = false;
     }
 
     protected void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !iSActive)
+        if (collision.CompareTag("Player") && !isActive && !IObstacle.isPlayerProtect)
         {
             playerController = collision.GetComponent<PlayerController>();
-            if(!iSActive) Active();
+            if(!isActive) Active();
         }
     }
 

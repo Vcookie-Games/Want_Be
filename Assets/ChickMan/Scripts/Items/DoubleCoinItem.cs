@@ -32,15 +32,10 @@ public class DoubleCoinItem : Item
     }
     
 
-    void OnTriggerEnter2D(Collider2D collision)
+    public override void OnTriggerEnter2D(Collider2D collision)
     {
         gameController = GameController.Instance;
-        if (collision.CompareTag("Player"))
-        {
-            CheckSame();
-            Debug.Log($"Đã kích hoạt {itemName}");
-        }
-       
+        base.OnTriggerEnter2D(collision);
     }
      
 }

@@ -36,16 +36,15 @@ public class SpeedUpItem : Item
         }
         base.ActivateDespawn();
     }
-    
 
-    void OnTriggerEnter2D(Collider2D collision)
+
+    public override void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.CompareTag("Player"))
         {
             playerController = collision.GetComponent<PlayerController>();
-            CheckSame();
-            Debug.Log($"Đã kích hoạt {itemName}");
         }
+        base.OnTriggerEnter2D(collision);
        
     }
 }

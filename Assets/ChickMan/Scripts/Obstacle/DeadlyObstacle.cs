@@ -8,7 +8,7 @@ using UnityEngine;
 public abstract class DeadlyObstacle : MonoBehaviour, IObstacle
 
 {
-    bool IObstacle.IsPlayerDead => true;
+    bool IObstacle.isPlayerDead => true;
     [HideInInspector] protected PlayerController playerController;
     [Header("Status")]
     [SerializeField] protected bool isActive;
@@ -52,7 +52,7 @@ public abstract class DeadlyObstacle : MonoBehaviour, IObstacle
     }
     protected void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("Player") && !isActive)
+        if (collision.CompareTag("Player") && !isActive && !IObstacle.isPlayerProtect)
         {
             playerController = collision.GetComponent<PlayerController>();
             if (playerController != null) Active();
