@@ -14,7 +14,7 @@ namespace HoangVuCode
         [SerializeField] private float jumpForce;
         [SerializeField] private float gravityScale;
         
-        [SerializeField] private Transform checkGroundPoint;
+        [SerializeField] protected Transform checkGroundPoint;
         [SerializeField] private LayerMask groundLayerMask;
         [SerializeField] private Vector2 size;
         [SerializeField] private float gravity;
@@ -31,10 +31,10 @@ namespace HoangVuCode
         
         private float currentJetPackFuel;
         private bool isJump;
-        private bool isMouseDown;
+        protected bool isMouseDown;
         private float currentTimeToUseJetPack;
-        private Rigidbody2D rigidbody2D;
-        private RaycastHit2D currentGroundCheck;
+        protected Rigidbody2D rigidbody2D;
+        protected RaycastHit2D currentGroundCheck;
         private float currentSpeed;
 
         public enum PlayerState
@@ -44,7 +44,8 @@ namespace HoangVuCode
             PlayerFall=2,
             PlayerStop=3,
             PlayerJetPack=4,
-            PlayerClimb
+            PlayerClimb,
+            PlayerIdle
         }
     
         private float currentDirectionX;
@@ -54,7 +55,7 @@ namespace HoangVuCode
             rigidbody2D = GetComponent<Rigidbody2D>();
         }
     
-        void Start()
+        protected virtual void Start()
         {
             currentSpeed = speed;
             currentJetPackFuel = maxJetPackFuel;
@@ -62,7 +63,7 @@ namespace HoangVuCode
            SetDirection(1f);
            SetState(PlayerState.PlayerMoveLeftRight);
         }
-        private void Update()
+        protected virtual void Update()
         {
             if (!GameController.Instance.IsInState(GameController.EGameState.GameLoop)) return;
             if (Input.GetMouseButtonDown(0))
@@ -89,7 +90,7 @@ namespace HoangVuCode
             
         }
         
-        private void FixedUpdate()
+        protected virtual void FixedUpdate()
         {
             if (!GameController.Instance.IsInState(GameController.EGameState.GameLoop)) return;
             if(!IsInState(PlayerState.PlayerStop) && !IsInState(PlayerState.PlayerClimb))
@@ -195,7 +196,7 @@ namespace HoangVuCode
            
         }
 
-        void SetState(PlayerState state)
+        protected void SetState(PlayerState state)
         {
             currentState = state;
             if (state == PlayerState.PlayerMoveLeftRight)
@@ -206,7 +207,7 @@ namespace HoangVuCode
             smokeTrailGameObject.SetActive(state == PlayerState.PlayerJetPack);
         }
 
-        bool IsInState(PlayerState state)
+        protected bool IsInState(PlayerState state)
         {
             return currentState == state;
         }
@@ -228,7 +229,7 @@ namespace HoangVuCode
     
       
 
-        bool CheckGround()
+        protected bool CheckGround()
         {
             currentGroundCheck = Physics2D.BoxCast(checkGroundPoint.position, size, 0f,
                 Vector2.down, 0f, groundLayerMask);

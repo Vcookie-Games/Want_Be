@@ -15,6 +15,7 @@ namespace HoangVuCode
         
         public float Width => cam.orthographicSize * cam.aspect * 2;
         public float Aspect => cam.aspect;
+        public float Height => cam.orthographicSize * 2;
         private void Awake()
         {
             cam = GetComponent<Camera>();
