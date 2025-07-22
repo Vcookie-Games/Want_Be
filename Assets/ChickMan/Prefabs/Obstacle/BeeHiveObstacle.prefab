@@ -165,7 +165,7 @@ MonoBehaviour:
   timeStun: 0
   canStun: 0
   isStun: 0
-  iSActive: 0
+  isActive: 0
   maxHitCount: 5
   currentHitCount: 0
   BeeSwarmPrefab: {fileID: 8322882533855245798, guid: 7a19fa12b7a18864a8b741e61a8ef614, type: 3}
