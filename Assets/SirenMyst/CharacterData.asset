@@ -13,8 +13,8 @@ MonoBehaviour:
   m_Name: CharacterData
   m_EditorClassIdentifier: 
   character:
-  - characterName: Demo_1
-    characterSprite: {fileID: 21300000, guid: da0dea11a992a264ea32ee1d4fca6758, type: 3}
+  - characterName: Hunter
+    characterSprite: {fileID: 21300000, guid: 6f3520c9ecd6feb46bb40a150f2a39d2, type: 3}
   - characterName: Demo_2
     characterSprite: {fileID: 21300000, guid: 834b2a13b5953e642b4973f19624b292, type: 3}
   - characterName: Demo_3

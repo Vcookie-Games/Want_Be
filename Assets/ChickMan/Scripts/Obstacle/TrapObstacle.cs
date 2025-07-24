@@ -80,7 +80,7 @@ public abstract class TrapObstacle : MonoBehaviour, IObstacle
 
         while (timeLeft > 0)
         {
-            Debug.Log($"Time left: {timeLeft:F1}s");
+            //Debug.Log($"Time left: {timeLeft:F1}s");
             yield return new WaitForSeconds(1f);
             timeLeft -= 1f;
         }

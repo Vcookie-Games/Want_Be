@@ -18,7 +18,7 @@ namespace SirenMyst
             if (AudioManager.instance != null)
             {
                 Destroy(this.gameObject);
-                Debug.LogWarning("Only 1 AudioManager allow to exist"); 
+                //Debug.LogWarning("Only 1 AudioManager allow to exist"); 
             }
             else
             {

@@ -10,5 +10,5 @@ EditorBuildSettings:
     guid: b0c54a63e9f79d14c8beab05782dd42f
   - enabled: 1
     path: Assets/SirenMyst/Scenes/Demo.unity
-    guid: 68ce23ca4c566ea4cae7b4a41584cb89
+    guid: fcec651aceccd3a4db3b658d5765f98f
   m_configObjects: {}
