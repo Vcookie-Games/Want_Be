@@ -6,7 +6,7 @@ using Unity.VisualScripting;
 
 public class AutoCollectorItem : Item
 {
-    PlayerController playerController;
+    PlayerMovement playerMovement;
     GameObject CollisionDetector;
     public AutoCollectorItem()
     {
@@ -17,7 +17,7 @@ public class AutoCollectorItem : Item
     }
     public override void ActivateItem()
     {
-        if (playerController == null) return;
+        if (playerMovement == null) return;
         base.ActivateItem();
         CollisionDetector.SetActive(true);
 
@@ -39,7 +39,7 @@ public class AutoCollectorItem : Item
         CollisionDetector.SetActive(false);
         if (collision.CompareTag("Player"))
         {
-            playerController = collision.GetComponent<PlayerController>();
+            playerMovement = collision.GetComponent<PlayerMovement>();
         }
         base.OnTriggerEnter2D(collision);
 

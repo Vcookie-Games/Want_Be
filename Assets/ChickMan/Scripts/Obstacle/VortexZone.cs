@@ -31,8 +31,8 @@ public class VortexZone : DeadlyObstacle
     {
         if (isBeingPulled)
         {
-            playerController.transform.localScale -= Vector3.one * scaleSpeed * Time.deltaTime;
-            if (playerController.transform.localScale.x <= minScale)
+            playerMovement.transform.localScale -= Vector3.one * scaleSpeed * Time.deltaTime;
+            if (playerMovement.transform.localScale.x <= minScale)
             {
                 DisPlayer();
                 gameController.GameOver();
@@ -53,12 +53,12 @@ public class VortexZone : DeadlyObstacle
 
         base.DeActive();
     }
-
+    
     protected void OnTriggerStay2D(Collider2D collision)
     {
         if (collision.CompareTag("Player") && isActive)
         {
-            playerController.transform.position = Vector2.MoveTowards(playerController.transform.position, transform.position, pullForce * Time.fixedDeltaTime);
+            playerMovement.transform.position = Vector2.MoveTowards(playerMovement.transform.position, transform.position, pullForce * Time.fixedDeltaTime);
             isBeingPulled = true;
 
         }
@@ -69,7 +69,7 @@ public class VortexZone : DeadlyObstacle
         if (collision.CompareTag("Player") && !IObstacle.isPlayerProtect)
         {
             isBeingPulled = false;
-            playerController.transform.localScale = Vector3.one;
+            playerMovement.transform.localScale = Vector3.one;
         }
     }
 }

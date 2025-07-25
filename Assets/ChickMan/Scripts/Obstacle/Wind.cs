@@ -36,37 +36,39 @@ public class Wind : TrapObstacle
 
     public override void Active()
     {
-        if (playerController == null || lvWindInfo == null) return;
+        if (playerMovement == null || lvWindInfo == null) return;
 
-        float speedDelta = 0f;
-        float playerDir = playerController.getDirectionX();
+        playerMovement.countdownTimer.SetSpeedTimer(2f);
 
-        switch (lvWindInfo.level)
-        {
-            case windLevel.Lv1:
-                speedDelta = (playerDir == (int)direction) ? 2f : 0.5f;
-                break;
-            case windLevel.Lv2:
-                speedDelta = (playerDir == (int)direction) ? 2.5f : 0.1f;
-                break;
-            case windLevel.Lv3:
-                speedDelta = (playerDir == (int)direction) ? 3f : -1.5f;
-                break;
-        }
+        // float speedDelta = 0f;
+        // float playerDir = playerMovement.getDirectionX();
 
-        playerController.AddSpeed(speedDelta);
+        // switch (lvWindInfo.level)
+        // {
+        //     case windLevel.Lv1:
+        //         speedDelta = (playerDir == (int)direction) ? 2f : 0.5f;
+        //         break;
+        //     case windLevel.Lv2:
+        //         speedDelta = (playerDir == (int)direction) ? 2.5f : 0.1f;
+        //         break;
+        //     case windLevel.Lv3:
+        //         speedDelta = (playerDir == (int)direction) ? 3f : -1.5f;
+        //         break;
+        // }
+
+        // playerMovement.AddSpeed(speedDelta);
     }
 
     public override void DeActive()
     {
-
+        playerMovement.countdownTimer.ResetTimer();
         base.DeActive();
         // Additional logic specific to Wind can be added here
     }
     void OnChildTriggerEnter2D(LvWindInfo info)
     {
         Debug.Log($"Child collided with {info.collision.gameObject.name} at level {info.level}");
-        playerController = info.collision.GetComponent<PlayerController>();
+        playerMovement = info.collision.GetComponent<PlayerMovement>();
         lvWindInfo = info;
         Active();
 

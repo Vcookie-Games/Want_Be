@@ -48,11 +48,11 @@ public class BeeSwarm : DeadlyObstacle
     {
         while (isActive)
         {
-            if (playerController != null && pointPlayer != null)
+            if (playerMovement != null && pointPlayer != null)
             {
                 pointPlayer.position = Vector3.Lerp(
                     pointPlayer.position,
-                    playerController.transform.position,
+                    playerMovement.transform.position,
                     0.5f
                 );
             }
@@ -67,15 +67,15 @@ public class BeeSwarm : DeadlyObstacle
         base.DeActive();
     }
 
-    public void SetPlayerController(PlayerController controller)
+    public void SetPlayerController(PlayerMovement player)
     {
-        if (controller == null) return;
-        playerController = controller;
+        if (player == null) return;
+        playerMovement = player;
         if (pointPlayer == null)
         {
             var pointObj = new GameObject("PointPlayer");
             pointPlayer = pointObj.transform;
-            pointPlayer.position = playerController.transform.position;
+            pointPlayer.position = playerMovement.transform.position;
         }
     }
 }

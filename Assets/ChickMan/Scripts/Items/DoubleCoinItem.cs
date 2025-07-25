@@ -6,27 +6,28 @@ using HoangVuCode;
 public class DoubleCoinItem : Item
 {
      GameController gameController;
+     PlayerMovement playerMovement;
      
 
     public DoubleCoinItem()
     {
-        itemName  = "Double coin"; 
+        itemName = "Double coin";
         maxUsageTime = 15f;
-        despawnTime =3f;
+        despawnTime = 3f;
         color = Color.yellow;
     }
     public override void ActivateItem()
     {
-        if(gameController==null) return;
+        if(playerMovement==null) return;
         base.ActivateItem();
-        gameController.SetCoinMultiplier(2);
+        playerMovement.countdownTimer.SetCoinMultiplier(2);
        
     }
     public override void ActivateDespawn()
     {
-        if(gameController!=null)
+        if(playerMovement!=null)
         {
-            gameController.resetCoinMultiplier();
+            playerMovement.countdownTimer.resetCoinMultiplier();
         }
         base.ActivateDespawn();
     }
@@ -34,7 +35,10 @@ public class DoubleCoinItem : Item
 
     public override void OnTriggerEnter2D(Collider2D collision)
     {
-        gameController = GameController.Instance;
+         if (collision.gameObject.CompareTag("Player"))
+        {
+            playerMovement = collision.GetComponent<PlayerMovement>();
+        }
         base.OnTriggerEnter2D(collision);
     }
      

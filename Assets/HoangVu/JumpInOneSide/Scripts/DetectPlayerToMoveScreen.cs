@@ -22,12 +22,12 @@ namespace HoangVuCode
             {
                 if (other.transform.position.y < transform.position.y)
                 {
-                    //Debug.Log("set false");
+                    Debug.Log("set false");
                     GameController.Instance.SetPlayerAboveScreen(false);
                 }
                 else
                 {
-                    //Debug.Log("set true");
+                    Debug.Log("set true");
                     GameController.Instance.SetPlayerAboveScreen(true);
                 }
             }

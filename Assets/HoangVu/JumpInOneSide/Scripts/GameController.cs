@@ -78,7 +78,10 @@ namespace HoangVuCode
             currentCoin = 0;
             coinMultiplier =1;
             isMoveCameraImmediately = IsUsingCamMoveImmediately;
-            highestPlayerY = player.transform.position.y;
+            if(player != null)
+            {
+                highestPlayerY = player.transform.position.y;
+            }
             ChunkGeneration.Instance.InitGenerateChunk(cameraController.GetBottomPositionOfScreen());
             moveTriggerTransform.position = cameraController.GetTriggerMovePosition();
             UpdateBounderPosition();
@@ -161,7 +164,10 @@ namespace HoangVuCode
             {
                 SetState(EGameState.MoveCam);
                 isPlayerAboveScreen = false;
-                player.StopMovement();
+                if(player != null)
+                {
+                    player.StopMovement();
+                }
                 cameraController.MoveTo(player.transform.position.y - offsetToCam);
             }
         }
@@ -212,7 +218,10 @@ namespace HoangVuCode
         {
             SetState(EGameState.GameOver);
             gameOverPanel.SetActive(true);
-            player.StopMovement();
+            if(player != null)
+            {
+                 player.StopMovement();
+            }
         }
 
 

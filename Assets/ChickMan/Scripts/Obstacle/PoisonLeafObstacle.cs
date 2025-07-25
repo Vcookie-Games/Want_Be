@@ -29,8 +29,7 @@ public class PoisonLeafObstacle : DeadlyObstacle
         if (currentHitCount >= hitCountEffect)
         {
             isActive = true;
-            playerController.AddSpeed(0);
-            playerController.ChangeJumpForce(0.5f);
+            playerMovement.countdownTimer.SetSpeedTimer(1.5f);
             isStunned = true;
             StartCoroutine(CountdownTimer(timeEffect, () =>
             {
@@ -46,8 +45,7 @@ public class PoisonLeafObstacle : DeadlyObstacle
 
     public override void DeActive()
     {
-        playerController.ResetSpeed();
-        playerController.ResetJumpForce();
+        playerMovement.countdownTimer.ResetTimer();
         isActive = false;
     }
    

@@ -26,7 +26,7 @@ public class BeeHiveObstacle : TrapObstacle
       StartCoroutine(CountdownTimer(timeSpawnDelay, () =>
       {
       BeeSwarm beeSwarm = Instantiate(BeeSwarmPrefab, transform.position, Quaternion.identity).GetComponent<BeeSwarm>();
-      beeSwarm.SetPlayerController(playerController);
+      beeSwarm.SetPlayerController(playerMovement);
       beeSwarm.Active();
       }));
       
@@ -44,7 +44,7 @@ public class BeeHiveObstacle : TrapObstacle
     {
       if (collision.gameObject.CompareTag("Player") && !isActive)
       {
-        playerController = collision.gameObject.GetComponent<PlayerController>();
+        playerMovement = collision.gameObject.GetComponent<PlayerMovement>();
         Active();
       }
     }

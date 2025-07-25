@@ -29,15 +29,14 @@ public class TinRoof : TrapObstacle
     public override void Active()
     {
         isActive = true;
-        playerController.transform.position = new Vector3(transform.position.x, transform.position.y - 1f, playerController.transform.position.z);
-        playerController.AddSpeed(0);
+        playerMovement.transform.position = new Vector3(transform.position.x, transform.position.y - 1f, playerMovement.transform.position.z);
         StartCoroutine(CountdownTimer(timeEffect, () => DeActive()));
         
     }
 
     public override void DeActive()
     {
-        playerController.ResetSpeed();
+        
         spriteRenderer.color = colorDeActive; 
         wall.SetActive(false);
         StartCoroutine(CountdownTimer(timeReActive, () =>

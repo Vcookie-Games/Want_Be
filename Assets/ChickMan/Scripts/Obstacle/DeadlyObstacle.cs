@@ -9,7 +9,7 @@ public abstract class DeadlyObstacle : MonoBehaviour, IObstacle
 
 {
     bool IObstacle.isPlayerDead => true;
-    [HideInInspector] protected PlayerController playerController;
+    [HideInInspector] protected PlayerMovement playerMovement;
     [Header("Status")]
     [SerializeField] protected bool isActive;
     [SerializeField] protected bool canDestroy;
@@ -54,8 +54,8 @@ public abstract class DeadlyObstacle : MonoBehaviour, IObstacle
     {
         if (collision.CompareTag("Player") && !isActive && !IObstacle.isPlayerProtect)
         {
-            playerController = collision.GetComponent<PlayerController>();
-            if (playerController != null) Active();
+            playerMovement = collision.GetComponent<PlayerMovement>();
+            if (playerMovement != null) Active();
         }
     }
 
@@ -76,7 +76,7 @@ public abstract class DeadlyObstacle : MonoBehaviour, IObstacle
 
     protected void DisPlayer()
     {
-        playerController.gameObject.SetActive(false);
+        playerMovement.gameObject.SetActive(false);
     }
 
 

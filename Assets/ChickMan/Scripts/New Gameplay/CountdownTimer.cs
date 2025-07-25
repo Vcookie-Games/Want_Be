@@ -1,15 +1,26 @@
 using System.Collections;
 using System.Collections.Generic;
+using HoangVuCode;
 using TMPro;
 using UnityEngine;
 
 public class CountdownTimer : MonoBehaviour
 {
-    public float timeRemaining = 10f;
+    [SerializeField] private float timeRemaining = 10f;
+    [SerializeField] private float speed = 1f;
+
+    private float currentSpeed;
+
     public GameObject player;
     public TextMeshProUGUI timerText;
-    public bool isRunning = false;
+    [SerializeField] private bool isRunning = false;
 
+    private int coinMultiplier = 1;
+
+    void Start()
+    {
+        currentSpeed = speed;
+    }
     public void StartTimer()
     {
         isRunning = true;
@@ -23,27 +34,62 @@ public class CountdownTimer : MonoBehaviour
     public void ResetTimer(float newTime)
     {
         timeRemaining = newTime;
-        timerText.text = timeRemaining.ToString();
+        UpdateTimerText();
+        isRunning = false;
+        if (player != null)
+            player.SetActive(true);
     }
 
-    void Update()
+    private void Update()
     {
-        if (isRunning && timeRemaining > 0)
+        if (!isRunning) return;
+
+        if (timeRemaining > 0f)
         {
-            timeRemaining -= Time.deltaTime;
-            timerText.text = Mathf.Ceil(timeRemaining).ToString() + "s";
+            timeRemaining -= Time.deltaTime * currentSpeed;
+            if (timeRemaining < 0f)
+                timeRemaining = 0f;
+
+            UpdateTimerText();
         }
-        if (timeRemaining <= 0)
+        else
         {
             isRunning = false;
             timerText.text = "Time's up!";
-            player.SetActive(false); // Disable player when time is up
+            GameController.Instance.GameOver();
+            if (player != null)
+                player.SetActive(false);
         }
     }
 
+    private void UpdateTimerText()
+    {
+        timerText.text = Mathf.Ceil(timeRemaining).ToString() + "s";
+    }
+
+    // Thêm time vào bộ đếm 
     public void AddTime(float time)
     {
-        timeRemaining += time;
+        timeRemaining += time * coinMultiplier;
+        UpdateTimerText();
+    }
+    public void SetCoinMultiplier(int multiplier)
+    {
+        if (coinMultiplier > 3 && coinMultiplier < 1) return;
+        coinMultiplier = multiplier;
+    }
+    public void resetCoinMultiplier()
+    {
+        coinMultiplier = 1;
+    }
+    // Đổi tốc độ
+    public void SetSpeedTimer(float newSpeed)
+    {
+        currentSpeed = newSpeed;
+    }
 
+    public void ResetTimer()
+    {
+        currentSpeed = speed;
     }
 }

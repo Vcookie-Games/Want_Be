@@ -8,7 +8,7 @@ public abstract class TrapObstacle : MonoBehaviour, IObstacle
 {
     
     bool IObstacle.isPlayerDead => false;
-    [HideInInspector] protected PlayerController playerController; 
+    [HideInInspector] protected PlayerMovement playerMovement; 
     [Header("Status")]
     [SerializeField] protected float timeEffect;
     [SerializeField] protected float timeStun;
@@ -36,16 +36,14 @@ public abstract class TrapObstacle : MonoBehaviour, IObstacle
         if(!canStun) return;
         if (currentHitCount >= maxHitCount)
         {
-            playerController.AddSpeed(0);
-            playerController.ChangeJumpForce(0.5f);
+            playerMovement.countdownTimer.SetSpeedTimer(2f);
             isStun = true;
             StartCoroutine(CountdownTimer(timeStun, () => DeActive()));
         }
         else if (!isActive)
         {
             currentHitCount++;
-            playerController.AddSpeed(0.2f);
-            playerController.ChangeJumpForce(0.5f);
+            playerMovement.countdownTimer.SetSpeedTimer(1.5f);;
             isActive = true;
             StartCoroutine(CountdownTimer(timeEffect, () => DeActive()));
         }
@@ -59,8 +57,7 @@ public abstract class TrapObstacle : MonoBehaviour, IObstacle
             currentHitCount = 0;
             StopAllCoroutines();
         }
-        playerController.ResetSpeed();
-        playerController.ResetJumpForce();
+        playerMovement.countdownTimer.ResetTimer();
         isActive = false;
         isStun = false;
     }
@@ -69,7 +66,7 @@ public abstract class TrapObstacle : MonoBehaviour, IObstacle
     {
         if (collision.CompareTag("Player") && !isActive && !IObstacle.isPlayerProtect)
         {
-            playerController = collision.GetComponent<PlayerController>();
+            playerMovement = collision.GetComponent<PlayerMovement>();
             if(!isActive) Active();
         }
     }

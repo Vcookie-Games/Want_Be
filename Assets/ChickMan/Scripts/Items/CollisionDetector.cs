@@ -7,7 +7,7 @@ public class CollisionDetector : MonoBehaviour
 {
     [SerializeField] private float speed = 8;
     [SerializeField] private float radius = 3;
-    PlayerController playerController;
+    PlayerMovement playerMovement;
     CircleCollider2D circleCollider2D;
     void Awake()
     {
@@ -20,8 +20,8 @@ public class CollisionDetector : MonoBehaviour
     void Update()
     {
         
-        if (playerController == null) return;
-        transform.position = playerController.transform.position;
+        if (playerMovement == null) return;
+        transform.position = playerMovement.transform.position;
         Collider2D[] hits = Physics2D.OverlapCircleAll(transform.position, radius);
         foreach (var hit in hits)
         {
@@ -36,7 +36,7 @@ public class CollisionDetector : MonoBehaviour
     {
         if (collision.CompareTag("Player"))
         {
-            playerController = collision.GetComponent<PlayerController>();
+            playerMovement = collision.GetComponent<PlayerMovement>();
         }
 
     }
