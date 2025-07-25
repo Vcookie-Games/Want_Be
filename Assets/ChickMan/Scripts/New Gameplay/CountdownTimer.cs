@@ -1,3 +1,4 @@
+using HoangVuCode;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -9,6 +10,8 @@ public class CountdownTimer : MonoBehaviour
     public GameObject player;
     public TextMeshProUGUI timerText;
     public bool isRunning = false;
+    
+    public bool hasStarted = false;
 
     public void StartTimer()
     {
@@ -28,6 +31,12 @@ public class CountdownTimer : MonoBehaviour
 
     void Update()
     {
+        if (Input.GetMouseButtonDown(0) && !this.hasStarted)
+        {
+            this.StartTimer();
+            this.hasStarted = true;
+        }
+
         if (isRunning && timeRemaining > 0)
         {
             timeRemaining -= Time.deltaTime;
@@ -38,6 +47,7 @@ public class CountdownTimer : MonoBehaviour
             isRunning = false;
             timerText.text = "Time's up!";
             player.SetActive(false); // Disable player when time is up
+            GameController.Instance.GameOver();
         }
     }
 

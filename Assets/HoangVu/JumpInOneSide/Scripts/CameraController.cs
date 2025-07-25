@@ -11,7 +11,8 @@ namespace HoangVuCode
         private Camera cam;
         [SerializeField] private float timeMove;
         [SerializeField] private Ease easeMove;
-
+        [SerializeField] private CountdownTimer countdownTimer;
+        [SerializeField] private float timerReset = 10f;
         
         public float Width => cam.orthographicSize * cam.aspect * 2;
         public float Aspect => cam.aspect;
@@ -25,6 +26,7 @@ namespace HoangVuCode
             transform.DOMoveY(yPositionBottom + cam.orthographicSize, timeMove).SetEase(easeMove).OnComplete(() =>
             {
                 GameController.Instance.OnCamFinishMoveToNextScreen();
+                this.countdownTimer.ResetTimer(this.timerReset);
             });
         }
 
